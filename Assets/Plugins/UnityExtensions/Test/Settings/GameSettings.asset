@@ -16,6 +16,54 @@ MonoBehaviour:
   direction: {x: 0.5, y: -0.7071068, z: 0.49999994}
   rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   radians: 3.1415927
-  defaultGravity: 16
+  defaultGravity: 8
+  interpolator:
+    type: 7
+    strength: 0.5
+  interpolator2:
+    type: -1
+    strength: 0.5
+    customCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.2
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 1
+      - serializedVersion: 3
+        time: 0.8
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   enabledUIColor: {r: 1, g: 1, b: 1, a: 1}
   disabledUIColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}

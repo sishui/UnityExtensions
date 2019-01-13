@@ -9,7 +9,7 @@ namespace UnityExtensions.Editor
     /// <summary>
     /// Mask 工具箱
     /// </summary>
-    public partial struct GUIKit
+    public partial struct EditorGUIKit
     {
         enum PopupMode { Bit, Mask }
 
@@ -315,7 +315,7 @@ namespace UnityExtensions.Editor
             return MaskField(EditorGUILayout.GetControlRect(options), label, mask, LayerMask.LayerToName);
         }
 
-    } // struct GUIKit
+    } // struct EditorGUIKit
 
 } // namespace UnityExtensions.Editor
 

@@ -207,7 +207,7 @@ namespace UnityExtensions
         /// <returns> 插值结果 </returns>
         public static float Bounce(float t, float strength = 0.5f)
         {
-            float k = 0.35f + 0.3f * strength;
+            float k = 0.3f + 0.4f * strength;
             float kk = k * k;
             float a = 1f + (k + k) * (1f + k + kk);
 

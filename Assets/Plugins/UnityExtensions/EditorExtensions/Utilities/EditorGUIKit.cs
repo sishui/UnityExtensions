@@ -20,7 +20,7 @@ namespace UnityExtensions.Editor
     /// <summary>
     /// 编辑器 UI 工具箱
     /// </summary>
-    public partial struct GUIKit
+    public partial struct EditorGUIKit
     {
         static GUIContent _tempContent = new GUIContent();
 
@@ -443,7 +443,7 @@ namespace UnityExtensions.Editor
             return menu;
         }
 
-    } // struct GUIKit
+    } // struct EditorGUIKit
 
 } // namespace UnityExtensions.Editor
 

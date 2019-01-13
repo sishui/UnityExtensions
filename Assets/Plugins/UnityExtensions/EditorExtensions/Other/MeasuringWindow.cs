@@ -62,10 +62,10 @@ namespace UnityExtensions.Editor
 
                 rect.x = rect.xMax + 8;
                 rect.width = rect.height * 1.5f;
-                if (GUI.Button(rect, GUIKit.TempContent("S", null, "Use selection"), EditorStyles.miniButtonLeft)) startTrans = Selection.activeTransform;
+                if (GUI.Button(rect, EditorGUIKit.TempContent("S", null, "Use selection"), EditorStyles.miniButtonLeft)) startTrans = Selection.activeTransform;
 
                 rect.x = rect.xMax;
-                if (GUI.Button(rect, GUIKit.TempContent("C", null, "Clear reference"), EditorStyles.miniButtonRight)) startTrans = null;
+                if (GUI.Button(rect, EditorGUIKit.TempContent("C", null, "Clear reference"), EditorStyles.miniButtonRight)) startTrans = null;
 
                 if (scope.changed) d.startTrans = startTrans;
             }
@@ -98,10 +98,10 @@ namespace UnityExtensions.Editor
 
                 rect.x = rect.xMax + 8;
                 rect.width = rect.height * 1.5f;
-                if (GUI.Button(rect, GUIKit.TempContent("S", null, "Use selection"), EditorStyles.miniButtonLeft)) endTrans = Selection.activeTransform;
+                if (GUI.Button(rect, EditorGUIKit.TempContent("S", null, "Use selection"), EditorStyles.miniButtonLeft)) endTrans = Selection.activeTransform;
 
                 rect.x = rect.xMax;
-                if (GUI.Button(rect, GUIKit.TempContent("C", null, "Clear reference"), EditorStyles.miniButtonRight)) endTrans = null;
+                if (GUI.Button(rect, EditorGUIKit.TempContent("C", null, "Clear reference"), EditorStyles.miniButtonRight)) endTrans = null;
 
                 if (scope.changed) d.endTrans = endTrans;
             }

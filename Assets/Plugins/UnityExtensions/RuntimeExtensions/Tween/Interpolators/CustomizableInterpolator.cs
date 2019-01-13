@@ -46,11 +46,11 @@ namespace UnityExtensions
         }
 
 
-        public CustomizableInterpolator(Type type, float strength = 0.5f)
+        public CustomizableInterpolator(Type type, float strength = 0.5f, AnimationCurve customCurve = null)
         {
             this.type = type;
             this.strength = strength;
-            customCurve = null;
+            this.customCurve = customCurve;
         }
 
     } // struct CustomizableInterpolator

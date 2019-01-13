@@ -23,6 +23,7 @@ namespace UnityExtensions.Test
         public Axis defaultGravity;
 
         public Interpolator interpolator;
+        public CustomizableInterpolator interpolator2;
 
         public Color enabledUIColor;
         public Color disabledUIColor;
