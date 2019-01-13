@@ -22,6 +22,8 @@ namespace UnityExtensions.Test
         [AxisUsage(AxisUsage.Direction6)]
         public Axis defaultGravity;
 
+        public Interpolator interpolator;
+
         public Color enabledUIColor;
         public Color disabledUIColor;
 

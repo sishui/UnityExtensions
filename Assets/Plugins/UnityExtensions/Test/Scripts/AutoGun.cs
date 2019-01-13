@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityExtensions.Editor
+namespace UnityExtensions.Test
 {
     /// <summary>
     /// 对象池使用示例

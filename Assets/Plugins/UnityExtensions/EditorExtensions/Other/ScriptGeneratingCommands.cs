@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+
+using UnityEngine;
 using UnityEditor;
 
 namespace UnityExtensions.Editor
@@ -28,3 +30,5 @@ namespace UnityExtensions.Editor
     } // struct ScriptGeneratingCommands
 
 } // namespace UnityExtensions.Editor
+
+#endif
