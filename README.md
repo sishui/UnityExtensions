@@ -4,14 +4,14 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 
 - 即用扩展
    - Unity 菜单：Assets->Create->Unity Extensions，你可能会用到 Layers 脚本自动生成功能。
-   - Unity 菜单：Component->Unity Extensions，你可能会用到游戏对象池（Game Object Pool）和 FPS 显示功能。
-   - Unity 菜单：Window->Unity Extensions，目前有一个强大的测量工具，设计者可能会喜欢——比如解谜游戏设计者 :-)
+   - Unity 菜单：Component->Unity Extensions，你可能会用到游戏对象池（Game Object Pool）、 FPS 显示、Tween 系统等功能。
+   - Unity 菜单：Window->Unity Extensions，目前有一个测量工具，设计者可能会喜欢——比如解谜游戏设计者 :-)
    
 - API 扩展
-   - 编辑器：位于 UnityExtensions.Editor 命名空间。你可能会喜欢用于 IMGUI 编程的 Scopes 类型。还有一些实用工具，推荐你做个快速浏览，或许可以为你的开发节约不少时间。
+   - 编辑器：位于 UnityExtensions.Editor 命名空间。你可能会喜欢用于 IMGUI 编程的 Scopes 类型。还有一些实用工具，推荐你做个快速浏览，或许可以为你的开发节约时间。
    - 运行时（除特别说明外，以下内容都位于 UnityExtensions 命名空间）
       - Attributes：位于 RuntimeExtensions/Attributes 目录，有一些实用的 Attribute 帮助你快速定制编辑器。
-      - 基类型：位于 RuntimeExtensions/BaseClasses 目录，你一定会喜欢 ScriptableAssetSingleton，可以帮你方便地做项目配置文件并在脚本中访问。
+      - 基类型：位于 RuntimeExtensions/BaseClasses 目录，你会喜欢 ScriptableAssetSingleton，可以帮你方便地做项目配置文件并在脚本中访问。
       - 扩展方法：位于 RuntimeExtensions/Extensions 目录，在你的代码中只要简单的添加 using UnityExtensions 即可使用这些扩展方法。
       - 状态机：位于 RuntimeExtensions/StateMachines 目录，包含一般状态机和专为 UI 设计的栈状态机，这是我能想到的最好用的状态机设计了。
       - 工具箱：位于 RuntimeExtensions/Utilities 目录，对应脚本中的各种 Kit 类。
@@ -21,6 +21,11 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 
 ![Stack State Machine](https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/StackStateMachineTest.gif)
 栈状态机示例
+
+![Tween](https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/TweenTest.gif)
+Tween 动画系统示例
+
+
 
 欢迎提交 Bug 报告，共同修复、改进这个通用扩展库。我是独立游戏开发者，如果你想和我联系，你可以在这些 QQ 群里找到我：
 
