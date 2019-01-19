@@ -156,6 +156,28 @@ namespace UnityExtensions
         }
 
 
+        public static void Encapsulate(this ref Rect rect, Vector2 point)
+        {
+            if (rect.xMin > point.x) rect.xMin = point.x;
+            if (rect.xMax < point.x) rect.xMax = point.x;
+            if (rect.yMin > point.y) rect.yMin = point.y;
+            if (rect.yMax < point.y) rect.yMax = point.y;
+        }
+
+
+        /// <summary>
+        /// 获取两个矩形的交集
+        /// </summary>
+        public static Rect GetIntersection(this Rect rect, Rect other)
+        {
+            if (rect.xMin > other.xMin) other.xMin = rect.xMin;
+            if (rect.xMax < other.xMax) other.xMax = rect.xMax;
+            if (rect.yMin > other.yMin) other.yMin = rect.yMin;
+            if (rect.yMax < other.yMax) other.yMax = rect.yMax;
+            return other;
+        }
+
+
         public static Vector2 xy(this Vector3 v)
         {
             return new Vector2(v.x, v.y);

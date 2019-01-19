@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -23,108 +24,71 @@ namespace UnityExtensions.Editor
     public partial struct EditorGUIKit
     {
         static GUIContent _tempContent = new GUIContent();
-
-        static GUIStyle _buttonStyle;
-        static GUIStyle _buttonLeftStyle;
-        static GUIStyle _buttonMiddleStyle;
-        static GUIStyle _buttonRightStyle;
-        static GUIStyle _centeredBoldLabelStyle;
+        static GUIStyle _centeredLabel;
+        static Texture2D _paneOptionsIconDark;
+        static Texture2D _paneOptionsIconLight;
 
 
-        /// <summary>
-        /// 按钮 GUIStyle
-        /// </summary>
-        public static GUIStyle buttonStyle
+        public static GUIStyle centeredLabel
         {
             get
             {
-                if (_buttonStyle == null) _buttonStyle = "Button";
-                return _buttonStyle;
-            }
-        }
-
-
-        /// <summary>
-        /// 左侧按钮 GUIStyle
-        /// </summary>
-        public static GUIStyle buttonLeftStyle
-        {
-            get
-            {
-                if (_buttonLeftStyle == null) _buttonLeftStyle = "ButtonLeft";
-                return _buttonLeftStyle;
-            }
-        }
-
-
-        /// <summary>
-        /// 中部按钮 GUIStyle
-        /// </summary>
-        public static GUIStyle buttonMiddleStyle
-        {
-            get
-            {
-                if (_buttonMiddleStyle == null) _buttonMiddleStyle = "ButtonMid";
-                return _buttonMiddleStyle;
-            }
-        }
-
-
-        /// <summary>
-        /// 右侧按钮 GUIStyle
-        /// </summary>
-        public static GUIStyle buttonRightStyle
-        {
-            get
-            {
-                if (_buttonRightStyle == null) _buttonRightStyle = "ButtonRight";
-                return _buttonRightStyle;
-            }
-        }
-
-
-        /// <summary>
-        /// 居中且加粗的 Label
-        /// </summary>
-        public static GUIStyle centeredBoldLabelStyle
-        {
-            get
-            {
-                if (_centeredBoldLabelStyle == null)
+                if (_centeredLabel == null)
                 {
-                    _centeredBoldLabelStyle = new GUIStyle(EditorStyles.boldLabel);
-                    _centeredBoldLabelStyle.alignment = TextAnchor.MiddleCenter;
+                    _centeredLabel = new GUIStyle(EditorStyles.label);
+                    _centeredLabel.alignment = TextAnchor.MiddleCenter;
                 }
-                return _centeredBoldLabelStyle;
+                return _centeredLabel;
+            }
+        }
+
+
+        public static Texture2D paneOptionsIcon
+        {
+            get
+            {
+                return EditorGUIUtility.isProSkin ? paneOptionsIconDark : paneOptionsIconLight;
+            }
+        }
+
+
+        public static Texture2D paneOptionsIconDark
+        {
+            get
+            {
+                if (_paneOptionsIconDark == null)
+                {
+                    _paneOptionsIconDark = (Texture2D)EditorGUIUtility.Load("Builtin Skins/DarkSkin/Images/pane options.png");
+                }
+                return _paneOptionsIconDark;
+            }
+        }
+
+
+        public static Texture2D paneOptionsIconLight
+        {
+            get
+            {
+                if (_paneOptionsIconLight == null)
+                {
+                    _paneOptionsIconLight = (Texture2D)EditorGUIUtility.Load("Builtin Skins/LightSkin/Images/pane options.png");
+                }
+                return _paneOptionsIconLight;
             }
         }
 
 
         /// <summary>
-        /// 编辑器默认内容颜色 (文本)
+        /// 编辑器默认文本颜色
         /// </summary>
-        public static Color defaultContentColor
+        public static Color defaultTextColor
         {
             get { return EditorStyles.label.normal.textColor; }
         }
 
 
         /// <summary>
-        /// 编辑器默认背景颜色
-        /// </summary>
-        public static Color defaultBackgroundColor
-        {
-            get
-            {
-                float rgb = EditorGUIUtility.isProSkin ? 56f : 194f;
-                rgb /= 255f;
-                return new Color(rgb, rgb, rgb, 1f);
-            }
-        }
-
-
-        /// <summary>
-        /// 获取临时的 GUIContent（避免 GC）
+        /// 获取临时的 GUIContent（避免 GC，仅用于临时绘制）
         /// </summary>
         public static GUIContent TempContent(string text = null, Texture image = null, string tooltip = null)
         {
@@ -246,6 +210,12 @@ namespace UnityExtensions.Editor
         }
 
 
+        public static float DragValue(Rect rect, float value, float step)
+        {
+            return DragValue(rect, GUIContent.none, value, step, GUIStyle.none);
+        }
+
+
         /// <summary>
         /// 拖动鼠标以修改数值
         /// </summary>
@@ -275,24 +245,33 @@ namespace UnityExtensions.Editor
                         if (GUIUtility.hotControl == controlID)
                         {
                             GUIUtility.hotControl = 0;
+                            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
                         }
                         break;
                     }
             }
 
-            if (Event.current.isMouse && GUIUtility.hotControl == controlID)
+            if (GUIUtility.hotControl == controlID)
             {
-                if (Event.current.type == EventType.MouseDrag)
+                if (Event.current.isMouse)
                 {
-                    if (horizontal) value += Event.current.delta.x * step;
-                    else value -= Event.current.delta.y * step;
-                    value = MathKit.RoundToSignificantDigitsFloat(value);
+                    if (Event.current.type == EventType.MouseDrag)
+                    {
+                        if (horizontal) value += Event.current.delta.x * step;
+                        else value -= Event.current.delta.y * step;
+                        value = MathKit.RoundToSignificantDigitsFloat(value);
 
-                    GUI.changed = true;
+                        GUI.changed = true;
+                    }
+
+                    Event.current.Use();
                 }
 
-                Event.current.Use();
+                rect.size = new Vector2(1000, 1000);
+                rect.center = Event.current.mousePosition;
             }
+
+            EditorGUIUtility.AddCursorRect(rect, horizontal ? MouseCursor.ResizeHorizontal : MouseCursor.ResizeVertical);
 
             return value;
         }
@@ -322,9 +301,10 @@ namespace UnityExtensions.Editor
                         {
                             GUI.DrawTexture(rect, EditorGUIUtility.whiteTexture);
 
-                            rect.width = Mathf.Round(rect.width * value);
+                            var progressRect = rect;
+                            progressRect.width = Mathf.Round(progressRect.width * value);
                             GUI.color = foregroundColor;
-                            GUI.DrawTexture(rect, EditorGUIUtility.whiteTexture);
+                            GUI.DrawTexture(progressRect, EditorGUIUtility.whiteTexture);
                         }
                         break;
                     }
@@ -343,19 +323,28 @@ namespace UnityExtensions.Editor
                         if (GUIUtility.hotControl == controlID)
                         {
                             GUIUtility.hotControl = 0;
+                            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
                         }
                         break;
                     }
             }
 
-            if (Event.current.isMouse && GUIUtility.hotControl == controlID)
+            if (GUIUtility.hotControl == controlID)
             {
-                float offset = Event.current.mousePosition.x - rect.x + 1f;
-                value = Mathf.Clamp01(offset / rect.width);
+                if (Event.current.isMouse)
+                {
+                    float offset = Event.current.mousePosition.x - rect.x + 1f;
+                    value = Mathf.Clamp01(offset / rect.width);
 
-                GUI.changed = true;
-                Event.current.Use();
+                    GUI.changed = true;
+                    Event.current.Use();
+                }
+
+                rect.size = new Vector2(1000, 1000);
+                rect.center = Event.current.mousePosition;
             }
+
+            EditorGUIUtility.AddCursorRect(rect, MouseCursor.SlideArrow);
 
             return value;
         }
@@ -415,27 +404,71 @@ namespace UnityExtensions.Editor
             Action<int> onSelect)
         {
             GenericMenu menu = new GenericMenu();
-            GUIContent item;
+            GUIContent content;
             MenuItemState state;
 
             for(int i=0; i<itemCount; i++)
             {
-                item = getItemContent(i);
-                if(item.text.EndsWith("/"))
+                content = getItemContent(i);
+                if(content.text.EndsWith("/"))
                 {
-                    menu.AddSeparator(item.text);
+                    menu.AddSeparator(content.text.Substring(0, content.text.Length - 1));
                 }
                 else
                 {
                     state = getItemState(i);
                     if(state == MenuItemState.Disabled)
                     {
-                        menu.AddDisabledItem(item);
+                        menu.AddDisabledItem(content);
                     }
                     else
                     {
                         int index = i;
-                        menu.AddItem(item, state == MenuItemState.Selected, () => onSelect(index));
+                        menu.AddItem(content, state == MenuItemState.Selected, () => onSelect(index));
+                    }
+                }
+            }
+
+            return menu;
+        }
+
+
+        /// <summary>
+        /// 创建菜单
+        /// </summary>
+        /// <param name="items"> 元素集合 </param>
+        /// <param name="getItemContent"> 获取菜单项内容, 分割符必须以 "/" 结尾 </param>
+        /// <param name="getItemState"> 获取菜单项状态, 不会对分隔符获取状态 </param>
+        /// <param name="onSelect"> 菜单项被选中的回调 </param>
+        /// <returns> 创建好的菜单, 接下来可以通过调用 DropDown 或 ShowAsContext 来显示菜单 </returns>
+        public static GenericMenu CreateMenu<T>(
+            IEnumerable<T> items,
+            Func<T, GUIContent> getItemContent,
+            Func<T, MenuItemState> getItemState,
+            Action<T> onSelect)
+        {
+            GenericMenu menu = new GenericMenu();
+            GUIContent content;
+            MenuItemState state;
+
+            foreach (var i in items)
+            {
+                content = getItemContent(i);
+                if (content.text.EndsWith("/"))
+                {
+                    menu.AddSeparator(content.text.Substring(0, content.text.Length - 1));
+                }
+                else
+                {
+                    state = getItemState(i);
+                    if (state == MenuItemState.Disabled)
+                    {
+                        menu.AddDisabledItem(content);
+                    }
+                    else
+                    {
+                        T current = i;
+                        menu.AddItem(content, state == MenuItemState.Selected, () => onSelect(current));
                     }
                 }
             }

@@ -10,7 +10,6 @@ namespace UnityExtensions
         LateUpdate = 2,
         FixedUpdate = 3,
         WaitForFixedUpdate = 4,
-        WaitForEndOfFrame = 5,
     }
 
 } // namespace UnityExtensions

@@ -7,6 +7,24 @@ namespace UnityExtensions
     public struct BitwiseKit
     {
         /// <summary>
+        /// 判断 value 是否包含 target 的所有非零二进制位
+        /// </summary>
+        public static bool Contain(int value, int target) { return (value & target) == target; }
+
+
+        /// <summary>
+        /// 判断两个值是否在某些二进制位都是非零的
+        /// </summary>
+        public static bool Intersect(int value1, int value2) { return (value1 & value2) != 0; }
+
+
+        /// <summary>
+        /// 从 value 中移除所有 target 的非零位
+        /// </summary>
+        public static int Remove(int value, int target) { return value & ~target; }
+
+
+        /// <summary>
         /// 获得将指定二进制位设置为 0 后的值
         /// </summary>
         public static sbyte SetBit0(sbyte value, int bit) { return (sbyte)(value & (~(1 << bit))); }

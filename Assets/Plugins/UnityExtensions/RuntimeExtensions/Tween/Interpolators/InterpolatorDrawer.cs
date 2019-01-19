@@ -97,9 +97,14 @@ namespace UnityExtensions.Editor
 
 
         // 绘制曲线
-        void DrawCurve(Rect rect)
+        void DrawCurve(Rect rect, bool drawStrength)
         {
             EditorGUI.DrawRect(rect, new Color(0.3f, 0.3f, 0.3f));
+
+            if (drawStrength)
+            {
+                EditorGUI.DrawRect(new Rect(rect.x + (rect.width-1) * _lastStrength, rect.y, 1, rect.height), new Color(1, 0.33f, 0));
+            }
 
             Vector2 origin = new Vector2(rect.x + 1, rect.y + 1);
             Vector2 scale = new Vector2(rect.width - 2, (rect.height - 2) / (_maxValue - _minValue));
@@ -131,7 +136,7 @@ namespace UnityExtensions.Editor
                 }
             }
 
-            EditorGUIKit.DrawWireRect(rect, new Color(0, 0, 0, 0.5f));
+            EditorGUIKit.DrawWireRect(rect, new Color(0, 0, 0, 0.4f));
         }
 
 
@@ -151,60 +156,63 @@ namespace UnityExtensions.Editor
         {
             position = EditorGUI.PrefixLabel(position, label);
 
-            var curveRect = position;
-            curveRect.xMin = curveRect.xMax - curveRect.height * 2;
-            position.xMax = curveRect.xMin - 4;
-            position.height = EditorGUIUtility.singleLineHeight;
+            var typeProp = property.FindPropertyRelative("type");
+            int type = typeProp.intValue;
+            var strengthProp = property.FindPropertyRelative("strength");
 
-            var prop = property.FindPropertyRelative("type");
+            var buttonRect = new Rect(position.x + 1, position.y + 2, EditorGUIKit.paneOptionsIconDark.width, EditorGUIKit.paneOptionsIconDark.height);
             using (var scope = new ChangeCheckScope(null))
             {
-                EditorGUI.PropertyField(position, prop, GUIContent.none);
-                if (scope.changed) property.FindPropertyRelative("strength").floatValue = 0.5f;
-            }
-            int type = prop.intValue;
-            float strength = 0;
+                EditorGUIUtility.AddCursorRect(buttonRect, MouseCursor.Arrow);
 
-            switch ((CustomizableInterpolator.Type)prop.intValue)
-            {
-                case CustomizableInterpolator.Type.Linear:
-                case CustomizableInterpolator.Type.Parabolic:
-                case CustomizableInterpolator.Type.Sine:
-                case CustomizableInterpolator.Type.CustomCurve:
-                    break;
+                System.Enum newType;
+                if (fieldInfo.FieldType == typeof(CustomizableInterpolator))
+                {
+                    newType = EditorGUI.EnumPopup(buttonRect, GUIContent.none, (CustomizableInterpolator.Type)type, GUIStyle.none);
+                }
+                else
+                {
+                    newType = EditorGUI.EnumPopup(buttonRect, GUIContent.none, (Interpolator.Type)type, GUIStyle.none);
+                }
 
-                default:
-                    position.y = position.yMax + 2;
-                    prop = property.FindPropertyRelative("strength");
-                    if (position.width < 110)
-                    {
-                        position.xMin -= 24;
-                        using (new LabelWidthScope(24))
-                        {
-                            prop.floatValue = strength = Mathf.Clamp01(EditorGUI.FloatField(position, "    ", prop.floatValue));
-                        }
-                    }
-                    else
-                    {
-                        EditorGUI.PropertyField(position, prop, GUIContent.none);
-                        strength = prop.floatValue;
-                    }
-                    break;
+                if (scope.changed)
+                {
+                    typeProp.intValue = type = (int)(CustomizableInterpolator.Type)newType;
+                    strengthProp.floatValue = 0.5f;
+                }
             }
 
-            if (type < 0)
+            if ((CustomizableInterpolator.Type)type == CustomizableInterpolator.Type.CustomCurve)
             {
-                prop = property.FindPropertyRelative("customCurve");
-                EditorGUI.PropertyField(curveRect, prop, GUIContent.none);
+                EditorGUIUtility.AddCursorRect(position, MouseCursor.Zoom);
+                EditorGUI.PropertyField(position, property.FindPropertyRelative("customCurve"), GUIContent.none);
             }
             else
             {
+                bool drawStrength;
+
+                switch ((CustomizableInterpolator.Type)type)
+                {
+                    case CustomizableInterpolator.Type.Linear:
+                    case CustomizableInterpolator.Type.Parabolic:
+                    case CustomizableInterpolator.Type.Sine:
+                        drawStrength = false;
+                        break;
+
+                    default:
+                        strengthProp.floatValue = Mathf.Clamp01(EditorGUIKit.DragValue(position, strengthProp.floatValue, 0.01f));
+                        drawStrength = true;
+                        break;
+                }
+
                 if (Event.current.type == EventType.Repaint)
                 {
-                    Sample(type, strength, Mathf.Min((int)curveRect.width, 256), 0.002f);
-                    DrawCurve(curveRect);
+                    Sample(type, strengthProp.floatValue, Mathf.Min((int)position.width, 256), 0.002f);
+                    DrawCurve(position, drawStrength);
                 }
             }
+
+            EditorGUI.LabelField(buttonRect, EditorGUIKit.TempContent(image: EditorGUIKit.paneOptionsIconDark), GUIStyle.none);
         }
 
     } // class InterpolatorDrawer

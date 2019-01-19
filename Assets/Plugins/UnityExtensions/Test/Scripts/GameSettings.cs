@@ -38,7 +38,7 @@ namespace UnityExtensions.Test
 
 #if UNITY_EDITOR
 
-        [UnityEditor.MenuItem("Assets/Create/Unity Extensions/Test/Game Settings")]
+        [UnityEditor.MenuItem("Assets/Create/Unity Extensions/Editor or Test/Game Settings")]
         static void CreateAsset()
         {
             CreateOrSelectAsset();

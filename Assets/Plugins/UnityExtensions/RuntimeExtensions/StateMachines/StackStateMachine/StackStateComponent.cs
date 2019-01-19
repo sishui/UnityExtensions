@@ -41,19 +41,10 @@ namespace UnityExtensions
         {
             add
             {
-                if (_onEnter == null)
-                {
-                    _onEnter = new StackStateEvent();
-                }
+                if (_onEnter == null) _onEnter = new StackStateEvent();
                 _onEnter.AddListener(value);
             }
-            remove
-            {
-                if (_onEnter != null)
-                {
-                    _onEnter.RemoveListener(value);
-                }
-            }
+            remove { _onEnter?.RemoveListener(value); }
         }
 
 
@@ -64,19 +55,10 @@ namespace UnityExtensions
         {
             add
             {
-                if (_onExit == null)
-                {
-                    _onExit = new StackStateEvent();
-                }
+                if (_onExit == null) _onExit = new StackStateEvent();
                 _onExit.AddListener(value);
             }
-            remove
-            {
-                if (_onExit != null)
-                {
-                    _onExit.RemoveListener(value);
-                }
-            }
+            remove { _onExit?.RemoveListener(value); }
         }
 
 

@@ -18,8 +18,8 @@ MonoBehaviour:
   radians: 3.1415927
   defaultGravity: 8
   interpolator:
-    type: 7
-    strength: 0.5
+    type: 3
+    strength: 0.78
   interpolator2:
     type: -1
     strength: 0.5
@@ -43,7 +43,7 @@ MonoBehaviour:
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 1
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8
         value: 1
@@ -51,7 +51,7 @@ MonoBehaviour:
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 1
+        inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
@@ -60,8 +60,8 @@ MonoBehaviour:
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4

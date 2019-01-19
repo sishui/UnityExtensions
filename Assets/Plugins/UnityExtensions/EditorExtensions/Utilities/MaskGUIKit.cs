@@ -139,7 +139,7 @@ namespace UnityExtensions.Editor
                     if (_hoverLine == 0) EditorGUI.DrawRect(rect, _mouseHoverColor);
                     if (value == 0)
                     {
-                        EditorGUI.DrawRect(checkRect, defaultContentColor);
+                        EditorGUI.DrawRect(checkRect, defaultTextColor);
                         EditorGUI.LabelField(textRect, "Nothing", EditorStyles.boldLabel);
                     }
                     else EditorGUI.LabelField(textRect, "Nothing");
@@ -153,7 +153,7 @@ namespace UnityExtensions.Editor
                     if (_hoverLine == 1) EditorGUI.DrawRect(rect, _mouseHoverColor);
                     if (value == ~0)
                     {
-                        EditorGUI.DrawRect(checkRect, defaultContentColor);
+                        EditorGUI.DrawRect(checkRect, defaultTextColor);
                         EditorGUI.LabelField(textRect, "Everything", EditorStyles.boldLabel);
                     }
                     else EditorGUI.LabelField(textRect, "Everything");
@@ -172,7 +172,7 @@ namespace UnityExtensions.Editor
                         if ((_hoverLine - 2) == i) EditorGUI.DrawRect(rect, _mouseHoverColor);
                         if (BitwiseKit.GetBit(value, _bits[i]))
                         {
-                            EditorGUI.DrawRect(checkRect, defaultContentColor);
+                            EditorGUI.DrawRect(checkRect, defaultTextColor);
                             EditorGUI.LabelField(textRect, _names[i], EditorStyles.boldLabel);
                         }
                         else EditorGUI.LabelField(textRect, _names[i]);
@@ -182,7 +182,7 @@ namespace UnityExtensions.Editor
                         if (_hoverLine == i) EditorGUI.DrawRect(rect, _mouseHoverColor);
                         if (value == _bits[i])
                         {
-                            EditorGUI.DrawRect(checkRect, defaultContentColor);
+                            EditorGUI.DrawRect(checkRect, defaultTextColor);
                             EditorGUI.LabelField(textRect, _names[i], EditorStyles.boldLabel);
                         }
                         else EditorGUI.LabelField(textRect, _names[i]);

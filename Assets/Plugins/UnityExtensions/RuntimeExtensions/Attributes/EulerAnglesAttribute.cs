@@ -45,11 +45,13 @@ namespace UnityExtensions
                     attribute._eulerAngles = attribute._quaternion.eulerAngles;
                 }
 
-                EditorGUI.BeginChangeCheck();
-                attribute._eulerAngles = EditorGUI.Vector3Field(position, label, attribute._eulerAngles);
-                if (EditorGUI.EndChangeCheck())
+                using (var scope = new ChangeCheckScope(null))
                 {
-                    property.quaternionValue = attribute._quaternion = Quaternion.Euler(attribute._eulerAngles);
+                    attribute._eulerAngles = EditorGUI.Vector3Field(position, label, attribute._eulerAngles);
+                    if (scope.changed)
+                    {
+                        property.quaternionValue = attribute._quaternion = Quaternion.Euler(attribute._eulerAngles).normalized;
+                    }
                 }
             }
 

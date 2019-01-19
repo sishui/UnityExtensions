@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace UnityExtensions
@@ -8,6 +10,33 @@ namespace UnityExtensions
     /// </summary>
     public struct ReflectionKit
     {
+        static IEnumerable<Type> _allAssemblyTypes;
+
+
+        public static IEnumerable<Type> allAssemblyTypes
+        {
+            get
+            {
+                if (_allAssemblyTypes == null)
+                {
+                    _allAssemblyTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(
+                        t =>
+                        {
+                            try
+                            {
+                                return t.GetTypes();
+                            }
+                            catch
+                            {
+                                return new Type[0];
+                            }
+                        });
+                }
+                return _allAssemblyTypes;
+            }
+        }
+
+
         /// <summary>
         /// 获取对象的成员字段信息。从最终类型开始向上查找，忽略字段的可见性。
         /// </summary>

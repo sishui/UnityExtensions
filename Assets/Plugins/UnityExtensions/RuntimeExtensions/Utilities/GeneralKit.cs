@@ -48,11 +48,11 @@ namespace UnityExtensions
             if (obj != null)
             {
 #if UNITY_EDITOR
-                if (Application.isPlaying) Object.Destroy(obj);
-                else Object.DestroyImmediate(obj);
-#else
-                Object.Destroy(obj);
+                if (!Application.isPlaying)
+                    Object.DestroyImmediate(obj);
+                else
 #endif
+                    Object.Destroy(obj);
             }
         }
 
