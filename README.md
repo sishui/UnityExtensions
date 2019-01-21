@@ -28,7 +28,7 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 
 <p align="center">
   <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/Tween.gif"><br>
-   Tween 动画系统编辑器：使用一个控制器控制多个动画效果
+   Tween 动画系统编辑器：使用一个控制器控制多个动画效果，在编辑器下即时预览
 </p>
 
 
