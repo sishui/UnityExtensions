@@ -36,6 +36,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        Transform _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetTransform;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetTransform;
+            targetTransform = _originalTarget;
+            base.Restore();
+            targetTransform = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

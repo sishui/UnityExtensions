@@ -300,7 +300,7 @@ namespace UnityExtensions
             void OnDisable()
             {
                 if (!Application.isPlaying)
-                    target.playing = false;
+                    if (target) target.playing = false;
             }
 
 

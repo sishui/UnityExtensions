@@ -6,33 +6,52 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    [TweenAnimation("Rendering/Light Color", "Light Color")]
-    class TweenLightColor : TweenColor
+    [TweenAnimation("Rendering/Light Range", "Light Range")]
+    class TweenLightRange : TweenFloat
     {
         public Light targetLight;
 
 
-        public override Color current
+        public override float current
         {
             get
             {
                 if (targetLight)
                 {
-                    return targetLight.color;
+                    return targetLight.range;
                 }
-                return new Color(1, 1, 1);
+                return 10f;
             }
             set
             {
                 if (targetLight)
                 {
-                    targetLight.color = value;
+                    targetLight.range = value;
                 }
             }
         }
 
 
 #if UNITY_EDITOR
+
+        Light _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetLight;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetLight;
+            targetLight = _originalTarget;
+            base.Restore();
+            targetLight = t;
+        }
+
 
         public override void Reset()
         {
@@ -43,8 +62,8 @@ namespace UnityExtensions
         }
 
 
-        [CustomEditor(typeof(TweenLightColor))]
-        new class Editor : Editor<TweenLightColor>
+        [CustomEditor(typeof(TweenLightRange))]
+        new class Editor : Editor<TweenLightRange>
         {
             SerializedProperty _targetLightProp;
 

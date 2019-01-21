@@ -34,6 +34,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        SpriteRenderer _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetRenderer;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetRenderer;
+            targetRenderer = _originalTarget;
+            base.Restore();
+            targetRenderer = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

@@ -18,31 +18,34 @@ namespace UnityExtensions
 
         protected override void OnInterpolate(float factor)
         {
-            var t = current;
-
-            if (useGradient)
+            if (toggleRGB || toggleAlpha)
             {
-                var c = gradient.Evaluate(factor);
-                if (toggleRGB)
-                {
-                    t.r = c.r;
-                    t.g = c.g;
-                    t.b = c.b;
-                }
-                if (toggleAlpha) t.a = c.a;
-            }
-            else
-            {
-                if (toggleRGB)
-                {
-                    t.r = (to.r - from.r) * factor + from.r;
-                    t.g = (to.g - from.g) * factor + from.g;
-                    t.b = (to.b - from.b) * factor + from.b;
-                }
-                if (toggleAlpha) t.a = (to.a - from.a) * factor + from.a;
-            }
+                var t = (toggleRGB && toggleAlpha) ? default : current;
 
-            current = t;
+                if (useGradient)
+                {
+                    var c = gradient.Evaluate(factor);
+                    if (toggleRGB)
+                    {
+                        t.r = c.r;
+                        t.g = c.g;
+                        t.b = c.b;
+                    }
+                    if (toggleAlpha) t.a = c.a;
+                }
+                else
+                {
+                    if (toggleRGB)
+                    {
+                        t.r = (to.r - from.r) * factor + from.r;
+                        t.g = (to.g - from.g) * factor + from.g;
+                        t.b = (to.b - from.b) * factor + from.b;
+                    }
+                    if (toggleAlpha) t.a = (to.a - from.a) * factor + from.a;
+                }
+
+                current = t;
+            }
         }
 
 

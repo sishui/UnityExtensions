@@ -12,12 +12,15 @@ namespace UnityExtensions
 
         protected override void OnInterpolate(float factor)
         {
-            var t = current;
+            if (toggle.anyTrue)
+            {
+                var t = toggle.allTrue ? default : current;
 
-            if (toggle.x) t.x = (to.x - from.x) * factor + from.x;
-            if (toggle.y) t.y = (to.y - from.y) * factor + from.y;
+                if (toggle.x) t.x = (to.x - from.x) * factor + from.x;
+                if (toggle.y) t.y = (to.y - from.y) * factor + from.y;
 
-            current = t;
+                current = t;
+            }
         }
 
 #if UNITY_EDITOR

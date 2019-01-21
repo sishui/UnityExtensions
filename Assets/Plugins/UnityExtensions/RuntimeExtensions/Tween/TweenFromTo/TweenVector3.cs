@@ -12,13 +12,16 @@ namespace UnityExtensions
 
         protected override void OnInterpolate(float factor)
         {
-            var t = current;
+            if (toggle.anyTrue)
+            {
+                var t = toggle.allTrue ? default : current;
 
-            if (toggle.x) t.x = (to.x - from.x) * factor + from.x;
-            if (toggle.y) t.y = (to.y - from.y) * factor + from.y;
-            if (toggle.z) t.z = (to.z - from.z) * factor + from.z;
+                if (toggle.x) t.x = (to.x - from.x) * factor + from.x;
+                if (toggle.y) t.y = (to.y - from.y) * factor + from.y;
+                if (toggle.z) t.z = (to.z - from.z) * factor + from.z;
 
-            current = t;
+                current = t;
+            }
         }
 
 

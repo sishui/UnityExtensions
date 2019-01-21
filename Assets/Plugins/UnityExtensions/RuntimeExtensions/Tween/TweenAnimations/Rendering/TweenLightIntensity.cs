@@ -34,6 +34,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        Light _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetLight;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetLight;
+            targetLight = _originalTarget;
+            base.Restore();
+            targetLight = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

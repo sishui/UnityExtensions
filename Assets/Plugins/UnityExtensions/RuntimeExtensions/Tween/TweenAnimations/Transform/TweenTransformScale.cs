@@ -6,11 +6,10 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    [TweenAnimation("Transform/Euler Angles", "Transform Euler Angles")]
-    class TweenTransformEulerAngles : TweenVector3
+    [TweenAnimation("Transform/Scale", "Transform Scale")]
+    class TweenTransformScale : TweenVector3
     {
         public Transform targetTransform;
-        public Space space = Space.Self;
 
 
         public override Vector3 current
@@ -19,16 +18,15 @@ namespace UnityExtensions
             {
                 if (targetTransform)
                 {
-                    return space == Space.Self ? targetTransform.localEulerAngles : targetTransform.eulerAngles;
+                    return targetTransform.localScale;
                 }
-                return default;
+                return new Vector3(1, 1, 1);
             }
             set
             {
                 if (targetTransform)
                 {
-                    if (space == Space.Self) targetTransform.localEulerAngles = value;
-                    else targetTransform.eulerAngles = value;
+                    targetTransform.localScale = value;
                 }
             }
         }
@@ -36,28 +34,44 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        Transform _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetTransform;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetTransform;
+            targetTransform = _originalTarget;
+            base.Restore();
+            targetTransform = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();
             targetTransform = transform;
-            space = Space.Self;
             from = current;
             to = current;
         }
 
 
-        [CustomEditor(typeof(TweenTransformEulerAngles))]
-        new class Editor : Editor<TweenTransformEulerAngles>
+        [CustomEditor(typeof(TweenTransformScale))]
+        new class Editor : Editor<TweenTransformScale>
         {
             SerializedProperty _targetTransformProp;
-            SerializedProperty _spaceProp;
 
 
             protected override void OnEnable()
             {
                 base.OnEnable();
                 _targetTransformProp = serializedObject.FindProperty("targetTransform");
-                _spaceProp = serializedObject.FindProperty("space");
             }
 
 
@@ -66,7 +80,6 @@ namespace UnityExtensions
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(_targetTransformProp);
-                EditorGUILayout.PropertyField(_spaceProp);
 
                 base.OnPropertiesGUI(tween);
             }

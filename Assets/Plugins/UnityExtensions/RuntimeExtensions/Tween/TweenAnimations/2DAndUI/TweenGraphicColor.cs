@@ -35,6 +35,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        Graphic _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetGraphic;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetGraphic;
+            targetGraphic = _originalTarget;
+            base.Restore();
+            targetGraphic = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

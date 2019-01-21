@@ -62,13 +62,38 @@ namespace UnityExtensions
                 base.InitOptionsMenu(menu, tween);
 
                 menu.AddSeparator(string.Empty);
-                menu.AddItem(new GUIContent("Set From to Current"), false, () => target.from = target.current);
-                menu.AddItem(new GUIContent("Set To to Current"), false, () => target.to = target.current);
+
+                menu.AddItem(new GUIContent("Swap From and To"), false, () =>
+                {
+                    UnityEditor.Undo.RecordObject(target, "Swap From and To");
+                    GeneralKit.Swap(ref target.from, ref target.to);
+                });
+
+                menu.AddItem(new GUIContent("Set From to Current"), false, () => 
+                {
+                    UnityEditor.Undo.RecordObject(target, "Set From to Current");
+                    target.from = target.current;
+                });
+
+                menu.AddItem(new GUIContent("Set To to Current"), false, () =>
+                {
+                    UnityEditor.Undo.RecordObject(target, "Set To to Current");
+                    target.to = target.current;
+                });
+
                 menu.AddSeparator(string.Empty);
-                menu.AddItem(new GUIContent("Set Current to From"), false, () => target.OnInterpolate(0));
-                menu.AddItem(new GUIContent("Set Current to To"), false, () => target.OnInterpolate(1));
-                menu.AddSeparator(string.Empty);
-                menu.AddItem(new GUIContent("Swap From and To"), false, () => GeneralKit.Swap(ref target.from, ref target.to));
+
+                menu.AddItem(new GUIContent("Set Current to From"), false, () =>
+                {
+                    target.OnInterpolate(0);
+                    UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
+                });
+
+                menu.AddItem(new GUIContent("Set Current to To"), false, () =>
+                {
+                    target.OnInterpolate(1);
+                    UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
+                });
             }
         }
 

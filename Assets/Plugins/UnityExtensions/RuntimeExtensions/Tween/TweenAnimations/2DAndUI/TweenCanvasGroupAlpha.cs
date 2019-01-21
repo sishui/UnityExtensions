@@ -34,6 +34,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        CanvasGroup _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetCanvasGroup;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetCanvasGroup;
+            targetCanvasGroup = _originalTarget;
+            base.Restore();
+            targetCanvasGroup = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

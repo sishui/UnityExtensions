@@ -35,6 +35,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        Image _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetImage;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetImage;
+            targetImage = _originalTarget;
+            base.Restore();
+            targetImage = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

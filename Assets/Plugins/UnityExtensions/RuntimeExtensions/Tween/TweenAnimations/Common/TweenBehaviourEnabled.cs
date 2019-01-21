@@ -35,6 +35,23 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        Behaviour _originalTarget;
+        bool _originalTargetEnabled;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetBehaviour;
+            if (_originalTarget) _originalTargetEnabled = _originalTarget.enabled;
+        }
+
+
+        public override void Restore()
+        {
+            if (_originalTarget) _originalTarget.enabled = _originalTargetEnabled;
+        }
+
+
         public override void Reset()
         {
             base.Reset();

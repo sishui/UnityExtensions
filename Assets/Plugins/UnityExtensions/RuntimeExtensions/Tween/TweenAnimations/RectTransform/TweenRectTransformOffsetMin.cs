@@ -6,8 +6,8 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    [TweenAnimation("Rect Transform/Offset Max", "Rect Transform Offset Max")]
-    class TweenRectTransformOffsetMax : TweenVector2
+    [TweenAnimation("Rect Transform/Offset Min", "Rect Transform Offset Min")]
+    class TweenRectTransformOffsetMin : TweenVector2
     {
         public RectTransform targetRectTransform;
 
@@ -18,7 +18,7 @@ namespace UnityExtensions
             {
                 if (targetRectTransform)
                 {
-                    return targetRectTransform.offsetMax;
+                    return targetRectTransform.offsetMin;
                 }
                 return default;
             }
@@ -26,13 +26,32 @@ namespace UnityExtensions
             {
                 if (targetRectTransform)
                 {
-                    targetRectTransform.offsetMax = value;
+                    targetRectTransform.offsetMin = value;
                 }
             }
         }
 
 
 #if UNITY_EDITOR
+
+        RectTransform _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetRectTransform;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetRectTransform;
+            targetRectTransform = _originalTarget;
+            base.Restore();
+            targetRectTransform = t;
+        }
+
 
         public override void Reset()
         {
@@ -43,8 +62,8 @@ namespace UnityExtensions
         }
 
 
-        [CustomEditor(typeof(TweenRectTransformOffsetMax))]
-        new class Editor : Editor<TweenRectTransformOffsetMax>
+        [CustomEditor(typeof(TweenRectTransformOffsetMin))]
+        new class Editor : Editor<TweenRectTransformOffsetMin>
         {
             SerializedProperty _targetRectTransformProp;
 

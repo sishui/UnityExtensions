@@ -8,6 +8,9 @@ namespace UnityExtensions
     /// </summary>
     public struct GeneralKit
     {
+        public static readonly ObjectPool<MaterialPropertyBlock> materialPropertyBlockPool = new ObjectPool<MaterialPropertyBlock>();
+
+
         /// <summary>
         /// 交换两个变量的值
         /// </summary>

@@ -36,6 +36,25 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
+        PostProcessVolume _originalTarget;
+
+
+        public override void Record()
+        {
+            _originalTarget = targetVolume;
+            base.Record();
+        }
+
+
+        public override void Restore()
+        {
+            var t = targetVolume;
+            targetVolume = _originalTarget;
+            base.Restore();
+            targetVolume = t;
+        }
+
+
         public override void Reset()
         {
             base.Reset();
