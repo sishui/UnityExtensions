@@ -19,14 +19,29 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
       
 关于一些 API 的使用范例位于 UnityExtensions/Test 目录，如果你不清楚该怎么用的时候可以参考下。
 
-![Stack State Machine](https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/StackStateMachineTest.gif)
-栈状态机示例
 
-![Tween](https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/TweenTest.gif)
-Tween 动画系统示例
+<p align="center">
+  <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/StackStateMachine.gif"><br>
+   栈状态机示例：使用栈状态机管理你的 UI 逻辑
+</p>
 
-![Tween](https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/TweenTest2.gif)
-Tween 动画系统示例2
+
+<p align="center">
+  <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/Tween.gif"><br>
+   Tween 动画系统编辑器：使用一个控制器控制多个动画效果，在编辑器下即时预览
+</p>
+
+
+<p align="center">
+  <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/Tween2.gif"><br>
+   Tween 动画系统 UI 示例：通过 UI 事件系统可以方便的与 Tween 系统交互
+</p>
+
+
+<p align="center">
+  <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/TweenMaterialProperty.png"><br>
+   Tween 动画系统材质属性：利用 MaterialPropertyBlock 实现的材质动画可避免复制材质，并且可自动识别属性数据类型
+</p>
 
 
 欢迎提交 Bug 报告，共同修复、改进这个通用扩展库。我是独立游戏开发者，如果你想和我联系，你可以在这些 QQ 群里找到我：
