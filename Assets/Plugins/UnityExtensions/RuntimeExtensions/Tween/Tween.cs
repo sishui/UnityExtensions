@@ -56,7 +56,8 @@ namespace UnityExtensions
         float _normalizedTime = 0f;
 
 
-        public PlayDirection direction { get; private set; }
+        [NonSerialized]
+        public PlayDirection direction;
 
 
         public float duration
@@ -116,6 +117,24 @@ namespace UnityExtensions
         public void ReverseDirection()
         {
             direction = direction == PlayDirection.Forward ? PlayDirection.Back : PlayDirection.Forward;
+        }
+
+
+        /// <summary>
+        /// 设置正向播放（Unity 事件序列化辅助）
+        /// </summary>
+        public void SetDirectionForward()
+        {
+            direction = PlayDirection.Forward;
+        }
+
+
+        /// <summary>
+        /// 设置反向播放（Unity 事件序列化辅助）
+        /// </summary>
+        public void SetDirectionBack()
+        {
+            direction = PlayDirection.Back;
         }
 
 

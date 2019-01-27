@@ -21,6 +21,21 @@ namespace UnityExtensions.Editor
         List<Vector3> _samples = new List<Vector3>(64);
 
 
+        static GUIStyle _buttonStype;
+        public static GUIStyle buttonStyle
+        {
+            get
+            {
+                if (_buttonStype == null)
+                {
+                    _buttonStype = new GUIStyle(GUIStyle.none);
+                    _buttonStype.clipping = TextClipping.Clip;
+                }
+                return _buttonStype;
+            }
+        }
+
+
         // 采样
         void Sample(int type, float strength, int maxSegments, float maxError)
         {
@@ -168,11 +183,11 @@ namespace UnityExtensions.Editor
                 System.Enum newType;
                 if (fieldInfo.FieldType == typeof(CustomizableInterpolator))
                 {
-                    newType = EditorGUI.EnumPopup(buttonRect, GUIContent.none, (CustomizableInterpolator.Type)type, GUIStyle.none);
+                    newType = EditorGUI.EnumPopup(buttonRect, GUIContent.none, (CustomizableInterpolator.Type)type, buttonStyle);
                 }
                 else
                 {
-                    newType = EditorGUI.EnumPopup(buttonRect, GUIContent.none, (Interpolator.Type)type, GUIStyle.none);
+                    newType = EditorGUI.EnumPopup(buttonRect, GUIContent.none, (Interpolator.Type)type, buttonStyle);
                 }
 
                 if (scope.changed)

@@ -308,6 +308,41 @@ namespace UnityExtensions.Editor
         }
     }
 
+
+    public enum HotControlChangeEvent
+    {
+        None,
+        GotHot,
+        LostHot
+    }
+
+
+    public struct HotControlChangeCheckScope : IDisposable
+    {
+        int _lastHotControl;
+
+
+        public HotControlChangeCheckScope(int useless)
+        {
+            _lastHotControl = GUIUtility.hotControl;
+        }
+
+
+        public HotControlChangeEvent eventType
+        {
+            get
+            {
+                return _lastHotControl == GUIUtility.hotControl ? HotControlChangeEvent.None :
+                    (_lastHotControl == 0 ? HotControlChangeEvent.LostHot : HotControlChangeEvent.GotHot);
+            }
+        }
+
+
+        void IDisposable.Dispose()
+        {
+        }
+    }
+
 } // namespace UnityExtensions.Editor
 
 #endif // UNITY_EDITOR

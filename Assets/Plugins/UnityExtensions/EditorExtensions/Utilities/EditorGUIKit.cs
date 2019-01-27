@@ -24,21 +24,91 @@ namespace UnityExtensions.Editor
     public partial struct EditorGUIKit
     {
         static GUIContent _tempContent = new GUIContent();
-        static GUIStyle _centeredLabel;
+
+        static GUIStyle _buttonStyle;
+        static GUIStyle _buttonLeftStyle;
+        static GUIStyle _buttonMiddleStyle;
+        static GUIStyle _buttonRightStyle;
+        static GUIStyle _middleCenterLabelStyle;
+        static GUIStyle _middleLeftLabelStyle;
+
         static Texture2D _paneOptionsIconDark;
         static Texture2D _paneOptionsIconLight;
 
 
-        public static GUIStyle centeredLabel
+        public static GUIStyle buttonStyle
         {
             get
             {
-                if (_centeredLabel == null)
+                if (_buttonStyle == null) _buttonStyle = "Button";
+                return _buttonStyle;
+            }
+        }
+
+
+        /// <summary>
+        /// 左侧按钮 GUIStyle
+        /// </summary>
+        public static GUIStyle buttonLeftStyle
+        {
+            get
+            {
+                if (_buttonLeftStyle == null) _buttonLeftStyle = "ButtonLeft";
+                return _buttonLeftStyle;
+            }
+        }
+
+
+        /// <summary>
+        /// 中部按钮 GUIStyle
+        /// </summary>
+        public static GUIStyle buttonMiddleStyle
+        {
+            get
+            {
+                if (_buttonMiddleStyle == null) _buttonMiddleStyle = "ButtonMid";
+                return _buttonMiddleStyle;
+            }
+        }
+
+
+        /// <summary>
+        /// 右侧按钮 GUIStyle
+        /// </summary>
+        public static GUIStyle buttonRightStyle
+        {
+            get
+            {
+                if (_buttonRightStyle == null) _buttonRightStyle = "ButtonRight";
+                return _buttonRightStyle;
+            }
+        }
+
+
+        public static GUIStyle middleCenterLabelStyle
+        {
+            get
+            {
+                if (_middleCenterLabelStyle == null)
                 {
-                    _centeredLabel = new GUIStyle(EditorStyles.label);
-                    _centeredLabel.alignment = TextAnchor.MiddleCenter;
+                    _middleCenterLabelStyle = new GUIStyle(EditorStyles.label);
+                    _middleCenterLabelStyle.alignment = TextAnchor.MiddleCenter;
                 }
-                return _centeredLabel;
+                return _middleCenterLabelStyle;
+            }
+        }
+
+
+        public static GUIStyle middleLeftLabelStyle
+        {
+            get
+            {
+                if (_middleLeftLabelStyle == null)
+                {
+                    _middleLeftLabelStyle = new GUIStyle(EditorStyles.label);
+                    _middleLeftLabelStyle.alignment = TextAnchor.MiddleLeft;
+                }
+                return _middleLeftLabelStyle;
             }
         }
 
