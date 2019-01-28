@@ -13,7 +13,7 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
       - Attributes：位于 RuntimeExtensions/Attributes 目录，有一些实用的 Attribute 帮助你快速定制编辑器。
       - 基类型：位于 RuntimeExtensions/BaseClasses 目录，你会喜欢 ScriptableAssetSingleton，可以帮你方便地做项目配置文件并在脚本中访问。
       - 扩展方法：位于 RuntimeExtensions/Extensions 目录，在你的代码中只要简单的添加 using UnityExtensions 即可使用这些扩展方法。
-      - 状态机：位于 RuntimeExtensions/StateMachines 目录，包含一般状态机和专为 UI 设计的栈状态机，这是我能想到的最好用的状态机设计了。
+      - 状态机：位于 RuntimeExtensions/StateMachines 目录，包含一般状态机和专为 UI 设计的栈状态机。
       - 工具箱：位于 RuntimeExtensions/Utilities 目录，对应脚本中的各种 Kit 类。
       - 其他补充类型：位于 RuntimeExtensions/Supplements 目录，你可能会用到快速链表、树或者可创建实例的 Random 类型。
       
