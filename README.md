@@ -4,12 +4,12 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 
 - 即用扩展
    - Unity 菜单：Assets->Create->Unity Extensions，你可能会用到 Layers 脚本自动生成功能。
-   - Unity 菜单：Component->Unity Extensions，你可能会用到游戏对象池（Game Object Pool）、 FPS 显示、Tween 系统等功能。
+   - Unity 菜单：Component->Unity Extensions，你可能会用到游戏对象池（Game Object Pool）、 FPS 显示、Tween 系统、Path 系统等功能。
    - Unity 菜单：Window->Unity Extensions，目前有一个测量工具，设计者可能会喜欢——比如解谜游戏设计者 :-)
    
 - API 扩展
-   - 编辑器：位于 UnityExtensions.Editor 命名空间。你可能会喜欢用于 IMGUI 编程的 Scopes 类型。还有一些实用工具，推荐你做个快速浏览，或许可以为你的开发节约时间。
-   - 运行时（除特别说明外，以下内容都位于 UnityExtensions 命名空间）
+   - 编辑器：位于 UnityExtensions.Editor 命名空间。有一些实用工具，推荐你快速浏览一下，或许可以为你的开发节约时间。
+   - 运行时（位于 UnityExtensions 命名空间）
       - Attributes：位于 RuntimeExtensions/Attributes 目录，有一些实用的 Attribute 帮助你快速定制编辑器。
       - 基类型：位于 RuntimeExtensions/BaseClasses 目录，你会喜欢 ScriptableAssetSingleton，可以帮你方便地做项目配置文件并在脚本中访问。
       - 扩展方法：位于 RuntimeExtensions/Extensions 目录，在你的代码中只要简单的添加 using UnityExtensions 即可使用这些扩展方法。
@@ -41,6 +41,12 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 <p align="center">
   <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/TweenMaterialProperty.png"><br>
    Tween 动画系统材质属性：利用 MaterialPropertyBlock 实现的材质动画可避免复制材质，并且可自动识别属性数据类型
+</p>
+
+
+<p align="center">
+  <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/Path.gif"><br>
+   Path 系统：包含 Bezier Path 和 Cardinal Path 两种路径，可以方便得使物体沿着路径移动
 </p>
 
 
