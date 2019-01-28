@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UnityExtensions
 {
@@ -189,5 +190,12 @@ namespace UnityExtensions
         }
 
     } // class StackStateMachineComponent<T>
+
+
+    [AddComponentMenu("Unity Extensions/State Machines/Stack State Machine")]
+    [DisallowMultipleComponent]
+    public class StackStateMachineComponent : StackStateMachineComponent<BaseStackStateComponent>
+    {
+    }
 
 } // namespace UnityExtensions

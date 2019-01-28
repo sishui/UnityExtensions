@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -571,6 +570,13 @@ namespace UnityExtensions
             }
 
             return location;
+        }
+
+
+        public virtual void SetTransform(Transform target, float length, ref Location location)
+        {
+            location = GetLocationByLength(length, location.index);
+            target.position = GetPoint(location);
         }
 
     } // class Path

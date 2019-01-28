@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    [TweenAnimation("Common/Behaviour Enabled", "Behaviour Enabled")]
+    [TweenAnimation("Other/Behaviour Enabled", "Behaviour Enabled")]
     class TweenBehaviourEnabled : TweenFloat
     {
         public Behaviour targetBehaviour;

@@ -9,7 +9,65 @@ namespace UnityExtensions
 {
     public partial class CardinalPathWithRotation
     {
+        [SerializeField]
+        bool _previewRotation;
+
+
         protected override Type floatingWindowType => typeof(CardinalPathWithRotationFloatingWindow);
+
+
+        protected override void DrawLocalGizmos(ref Matrix4x4 matrix)
+        {
+            base.DrawLocalGizmos(ref matrix);
+
+            if (_previewRotation)
+            {
+                ValidateSamples();
+
+                int segmentCount = this.segmentCount;
+                Location loc;
+                Quaternion rot;
+                Vector3 pos;
+
+                Handles.color = previewRotationColor;
+
+                for (loc.index = 0; loc.index < segmentCount; loc.index++)
+                {
+                    int count = Mathf.CeilToInt(node(loc.index).length);
+
+                    for (int t = 0; t <= count; t++)
+                    {
+                        if (t == count && loc.index != segmentCount - 1) continue;
+
+                        loc.time = (float)t / count;
+                        rot = GetRotation(loc, Space.Self);
+                        pos = GetPoint(loc, Space.Self);
+
+                        Handles.ArrowHandleCap(0, pos, rot, 0.75f, EventType.Repaint);
+                        HandlesKit.DrawAALine(pos, pos + rot * Vector3.up);
+                    }
+                }
+            }
+        }
+
+
+        [CustomEditor(typeof(CardinalPathWithRotation))]
+        new class Editor : Path.Editor
+        {
+            public override void OnInspectorGUI()
+            {
+                base.OnInspectorGUI();
+
+                var path = target as CardinalPathWithRotation;
+
+                using (var scope = new ChangeCheckScope(path))
+                {
+                    bool value = EditorGUIKit.IndentedToggleButton("Preview Rotation", path._previewRotation);
+                    if (scope.changed) path._previewRotation = value;
+                }
+            }
+
+        } // class Editor
 
 
         class CardinalPathWithRotationFloatingWindow : CardinalPathFloatingWindow<CardinalPathWithRotation>
@@ -55,7 +113,7 @@ namespace UnityExtensions
 
                     float size = HandleUtility.GetHandleSize(position);
 
-                    Handles.color = new Color(0.6f, 1f, 0.3f);
+                    Handles.color = handlesRotationColor;
                     Handles.ArrowHandleCap(0, position, rotation, size, EventType.Repaint);
                     HandlesKit.DrawAALine(position, position + rotation * Vector3.up * size);
 

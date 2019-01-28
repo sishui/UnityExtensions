@@ -63,7 +63,7 @@ namespace UnityExtensions
     /// <summary>
     /// 带旋转控制的贝塞尔路径
     /// </summary>
-    [AddComponentMenu("Unity Extensions/Path/Bezier Path (with Rotation)")]
+    [AddComponentMenu("Unity Extensions/Paths/Bezier Path (with Rotation)")]
     public partial class BezierPathWithRotation : BezierPath<BezierNodeWithRotation>
     {
         public override void Reset()
@@ -121,6 +121,32 @@ namespace UnityExtensions
                     node(nodeIndex).lookTangent = node(nodeIndex-1).lookTangent;
                 }
             }
+        }
+
+
+        public Quaternion GetRotation(Location location, Space space = Space.World)
+        {
+            var node1 = node(location.index);
+            var node2 = circularNode(location.index + 1);
+            Quaternion result;
+
+            if (node1.lookTangent && node2.lookTangent)
+                result = Quaternion.LookRotation(GetTangent(location, Space.Self),
+                    Vector3.Slerp(node1.rotation * Vector3.up, node2.rotation * Vector3.up, location.time));
+            else
+                result = Quaternion.Slerp(node1.rotation, node2.rotation, location.time);
+
+            if (space == Space.World)
+                return TransformRotation(result);
+            else
+                return result;
+        }
+
+
+        public override void SetTransform(Transform target, float length, ref Location location)
+        {
+            base.SetTransform(target, length, ref location);
+            target.rotation = GetRotation(location);
         }
     }
 

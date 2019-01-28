@@ -266,7 +266,7 @@ namespace UnityExtensions
     /// <summary>
     /// CardinalPath
     /// </summary>
-    [AddComponentMenu("Unity Extensions/Path/Cardinal Path")]
+    [AddComponentMenu("Unity Extensions/Paths/Cardinal Path")]
     public partial class CardinalPath : CardinalPath<CardinalNode>
     {
     }

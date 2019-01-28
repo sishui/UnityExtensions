@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace UnityExtensions
 {
@@ -99,5 +100,12 @@ namespace UnityExtensions
         }
 
     } // class StateMachineComponent<T>
+
+
+    [AddComponentMenu("Unity Extensions/State Machines/State Machine")]
+    [DisallowMultipleComponent]
+    public class StateMachineComponent : StateMachineComponent<BaseStateComponent>
+    {
+    }
 
 } // namespace UnityExtensions

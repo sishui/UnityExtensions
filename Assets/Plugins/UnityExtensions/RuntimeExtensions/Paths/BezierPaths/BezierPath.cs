@@ -311,7 +311,7 @@ namespace UnityExtensions
     /// <summary>
     /// 贝塞尔路径
     /// </summary>
-    [AddComponentMenu("Unity Extensions/Path/Bezier Path")]
+    [AddComponentMenu("Unity Extensions/Paths/Bezier Path")]
     public partial class BezierPath : BezierPath<BezierNode>
     {
     }

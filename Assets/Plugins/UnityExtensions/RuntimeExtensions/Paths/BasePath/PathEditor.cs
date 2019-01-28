@@ -14,6 +14,9 @@ namespace UnityExtensions
         static Color _segmentColor = new Color(1, 0.25f, 0.5f);
         static Color _arrowColor = new Color(1, 0.75f, 0f);
 
+        protected static Color previewRotationColor = new Color(0.6f, 1f, 0.3f, 0.5f);
+        protected static Color handlesRotationColor = new Color(0.6f, 1f, 0.3f);
+
 
         [SerializeField]
         bool _alwaysVisible;
@@ -24,38 +27,40 @@ namespace UnityExtensions
         {
             if ((type & GizmoType.Selected) != 0 || target._alwaysVisible || FloatingWindow.target == target)
             {
-                target.DoDrawGizmos();
+                Matrix4x4 matrix = Matrix4x4.TRS(
+                    target.transform.position, target.transform.rotation,
+                    new Vector3(target._worldScale, target._worldScale, target._worldScale));
+
+                using (new HandlesMatrixScope(ref matrix))
+                {
+                    target.DrawLocalGizmos(ref matrix);
+                }
             }
         }
 
 
-        void DoDrawGizmos()
+        protected virtual void DrawLocalGizmos(ref Matrix4x4 matrix)
         {
-            Matrix4x4 matrix = Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(_worldScale, _worldScale, _worldScale));
+            // 绘制路径
 
-            using (new HandlesMatrixScope(ref matrix))
+            int count = segmentCount;
+            for (int i = 0; i < count; i++)
             {
-                // 绘制路径
+                this[i].Draw(_segmentColor, _segmentWidth);
+            }
 
-                int count = segmentCount;
-                for (int i = 0; i < count; i++)
-                {
-                    this[i].Draw(_segmentColor, _segmentWidth);
-                }
+            // 绘制箭头
 
-                // 绘制箭头
-
-                using (new HandlesColorScope(_arrowColor))
-                {
-                    Vector3 point = this[count - 1].GetPoint(1f);
-                    float scale = HandleUtility.GetHandleSize(point) / Mathf.Abs(_worldScale);
-                    Vector3 vector = new Vector3(0.06f, 0f, -0.2f) * scale;
-                    var tangent = this[count - 1].GetTangent(1f);
-                    var rotation = Quaternion.LookRotation(tangent, matrix.inverse.MultiplyPoint(Camera.current.transform.position) - point);
-                    HandlesKit.DrawAALine(point, point + rotation * vector);
-                    vector.x = -vector.x;
-                    HandlesKit.DrawAALine(point, point + rotation * vector);
-                }
+            using (new HandlesColorScope(_arrowColor))
+            {
+                Vector3 point = this[count - 1].GetPoint(1f);
+                float scale = HandleUtility.GetHandleSize(point) / Mathf.Abs(_worldScale);
+                Vector3 vector = new Vector3(0.06f, 0f, -0.2f) * scale;
+                var tangent = this[count - 1].GetTangent(1f);
+                var rotation = Quaternion.LookRotation(tangent, matrix.inverse.MultiplyPoint(Camera.current.transform.position) - point);
+                HandlesKit.DrawAALine(point, point + rotation * vector);
+                vector.x = -vector.x;
+                HandlesKit.DrawAALine(point, point + rotation * vector);
             }
         }
 
@@ -70,7 +75,7 @@ namespace UnityExtensions
         /// Path Inspector
         /// </summary>
         [CustomEditor(typeof(Path), true)]
-        class Editor : BaseEditor<Path>
+        protected class Editor : BaseEditor<Path>
         {
             public override void OnInspectorGUI()
             {

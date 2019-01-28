@@ -18,7 +18,8 @@ namespace UnityExtensions
     /// <summary>
     /// 状态组件. 状态的 Enter 和 Exit 事件可序列化
     /// </summary>
-    [AddComponentMenu("Unity Extensions/State Component")]
+    [AddComponentMenu("Unity Extensions/State Machines/State")]
+    [DisallowMultipleComponent]
     public class StateComponent : BaseStateComponent
     {
         [SerializeField]

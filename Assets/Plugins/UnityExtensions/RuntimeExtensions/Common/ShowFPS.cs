@@ -2,7 +2,7 @@
 
 namespace UnityExtensions
 {
-    [AddComponentMenu("Unity Extensions/Show FPS")]
+    [AddComponentMenu("Unity Extensions/Common/Show FPS")]
     [DisallowMultipleComponent]
     public class ShowFPS : ScriptableComponent
     {

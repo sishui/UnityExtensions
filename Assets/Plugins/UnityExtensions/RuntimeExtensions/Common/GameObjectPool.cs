@@ -8,7 +8,7 @@ using UnityExtensions.Editor;
 
 namespace UnityExtensions
 {
-    [AddComponentMenu("Unity Extensions/Game Object Pool")]
+    [AddComponentMenu("Unity Extensions/Common/Game Object Pool")]
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-100)]
     public class GameObjectPool : ScriptableComponent
