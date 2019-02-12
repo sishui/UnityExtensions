@@ -39,6 +39,7 @@ namespace UnityExtensions
     {
         Queue<SaveTask> _tasks = new Queue<SaveTask>(4);    // 请求的任务队列
         protected bool _finished = false;
+        bool _disposed = false;
 
         
         /// <summary>
@@ -56,11 +57,17 @@ namespace UnityExtensions
         /// <summary>
         /// 终止并释放资源
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (hasTask) UnityEngine.Debug.LogError("SaveManager has unfinished task!");
+            if (!_disposed)
+            {
+                if (hasTask) throw new Exception("SaveManager has unfinished task!");
 
-            ApplicationKit.update -= Update;
+                ApplicationKit.update -= Update;
+                OnDispose();
+
+                _disposed = true;
+            }
         }
 
 
@@ -74,39 +81,45 @@ namespace UnityExtensions
                 var task = _tasks.Dequeue();
 
                 // 后续处理
-                if (task.success)
+                switch (task.type)
                 {
-                    switch (task.type)
-                    {
-                        case SaveTask.Type.Load:
+                    case SaveTask.Type.Load:
+                        if (task.success)
                             task.exception = task.save.FromBytes(ref task.data);
-                            break;
-                    }
+                        else
+                            task.save.Reset();
+                        break;
                 }
 
-                FinishTask(task);
+                OnFinishTask(task);
                 _finished = false;
 
                 onTaskFinished?.Invoke(task);
 
                 if (_tasks.Count > 0)
                 {
-                    BeginTask(_tasks.Peek());
+                    OnBeginTask(_tasks.Peek());
                 }
             }
         }
 
 
         /// <summary>
+        /// 终止并释放资源
+        /// </summary>
+        protected abstract void OnDispose();
+
+
+        /// <summary>
         /// 开始任务时触发。当任务完成时设置 _finished 标记通知主线程
         /// </summary>
-        protected abstract void BeginTask(SaveTask task);
+        protected abstract void OnBeginTask(SaveTask task);
 
 
         /// <summary>
         /// 完成任务时触发
         /// </summary>
-        protected abstract void FinishTask(SaveTask task);
+        protected abstract void OnFinishTask(SaveTask task);
 
 
         /// <summary>
@@ -122,6 +135,8 @@ namespace UnityExtensions
         // 新建任务
         void NewTask(SaveTask.Type type, Save save, IStorageTarget target)
         {
+            if (_disposed) throw new Exception("SaveManager had already disposed.");
+
             var task = new SaveTask()
             {
                 type = type,
@@ -147,7 +162,7 @@ namespace UnityExtensions
             // 第一个任务需要主动唤起处理线程
             if (_tasks.Count == 1)
             {
-                BeginTask(_tasks.Peek());
+                OnBeginTask(_tasks.Peek());
             }
         }
 

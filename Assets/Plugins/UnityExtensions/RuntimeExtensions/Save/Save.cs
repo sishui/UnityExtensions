@@ -57,7 +57,7 @@ namespace UnityExtensions
         /// <summary>
         /// 重置数据. 当读取失败时会自动执行
         /// </summary>
-        protected abstract void Reset();
+        public abstract void Reset();
 
 
         /// <summary>

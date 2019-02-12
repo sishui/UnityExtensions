@@ -28,22 +28,21 @@ namespace UnityExtensions
         }
 
 
-        public override void Dispose()
+        protected override void OnDispose()
         {
-            base.Dispose();
             _event.Close();
             _thread.Abort();
         }
         
 
-        protected override void BeginTask(SaveTask task)
+        protected override void OnBeginTask(SaveTask task)
         {
             _task = task;
             _event.Set();
         }
 
 
-        protected override void FinishTask(SaveTask task)
+        protected override void OnFinishTask(SaveTask task)
         {
         }
 
