@@ -33,6 +33,11 @@ namespace UnityExtensions
         [CustomPropertyDrawer(typeof(LineAttribute))]
         class LineDrawer : BaseDecoratorDrawer<LineAttribute>
         {
+            public override bool CanCacheInspectorGUI()
+            {
+                return false;
+            }
+
             public override float GetHeight()
             {
                 return attribute._spaceBefore + attribute._spaceAfter + attribute._height;

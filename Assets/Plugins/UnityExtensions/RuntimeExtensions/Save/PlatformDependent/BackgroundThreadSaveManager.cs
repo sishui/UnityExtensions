@@ -4,7 +4,7 @@ using System.Threading;
 namespace UnityExtensions
 {
     /// <summary>
-    /// 背景线程存档管理
+    /// 背景线程存档管理。可用于文件系统存档
     /// </summary>
     public class BackgroundThreadSaveManager : SaveManager
     {
