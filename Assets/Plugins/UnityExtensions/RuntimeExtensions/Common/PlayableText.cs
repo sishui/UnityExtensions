@@ -57,8 +57,8 @@ namespace UnityExtensions
             get => m_Text;
             set
             {
-                visibleCharacterCount = Mathf.Min(_visibleCharacterCount, value == null ? 0 : value.Length);
                 base.text = value;
+                visibleCharacterCount = _visibleCharacterCount;
             }
         }
 
@@ -208,6 +208,7 @@ namespace UnityExtensions
         {
             base.OnValidate();
             supportRichText = false;
+            visibleCharacterCount = _visibleCharacterCount;
         }
 
 
