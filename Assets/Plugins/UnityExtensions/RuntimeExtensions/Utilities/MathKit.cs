@@ -68,6 +68,22 @@ namespace UnityExtensions
         }
 
 
+        public static Vector2 Add(Vector2 a, float b)
+        {
+            a.x += b;
+            a.y += b;
+            return a;
+        }
+
+
+        public static Vector2 Sub(Vector2 a, float b)
+        {
+            a.x -= b;
+            a.y -= b;
+            return a;
+        }
+
+
         public static Vector2 Clamp01(Vector2 value)
         {
             value.x = Mathf.Clamp01(value.x);

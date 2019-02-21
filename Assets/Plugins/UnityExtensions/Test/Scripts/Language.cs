@@ -6,6 +6,7 @@ namespace UnityExtensions.Test
     public class Language : MonoBehaviour
     {
         public Dropdown languageList;
+        public PlayableText tipText;
 
 
         static string GetDefaultLanguage()
@@ -25,6 +26,8 @@ namespace UnityExtensions.Test
 
         private void Awake()
         {
+            LocalizationManager.onLanguageChanged += (_, __) => tipText.RestartPlaying();
+
             LocalizationManager.languageType = GetDefaultLanguage();
 
             for (int i = 0; i < LocalizationManager.languageCount; i++)
