@@ -52,8 +52,13 @@ Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 </p>
 
 <p align="center">
+  <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/LocalizationExcel.png"><br>
+   本地化系统：使用 Excel 开发本地化内容，发布后保留原始文件即可支持玩家 MOD
+</p>
+
+<p align="center">
   <img src="https://github.com/yuyang9119/UnityExtensions/blob/master/Documents/Localization.png"><br>
-   本地化系统：在运行时可以切换语言
+   本地化系统：在运行时切换语言
 </p>
 
 
