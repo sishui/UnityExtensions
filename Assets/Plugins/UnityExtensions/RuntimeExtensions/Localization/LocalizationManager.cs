@@ -101,11 +101,18 @@ namespace UnityExtensions
         /// <summary>
         /// 语言总数
         /// </summary>
-        public static int languageCount => _languages.Length;
+        public static int languageCount
+        {
+            get
+            {
+                LoadConfiguration();
+                return _languages.Length;
+            }
+        }
 
 
         /// <summary>
-        /// 当前语言名称
+        /// 当前语言名称 (default is empty)
         /// </summary>
         public static string languageName
             => _languageIndex < 0 ? string.Empty : _languages[_languageIndex].name;
@@ -122,13 +129,8 @@ namespace UnityExtensions
             get => _languageIndex;
             set
             {
-                if (!_initialized)
-                {
-                    LoadConfiguration();
-                    _initialized = true;
-                }
-
-                LoadLanguageInternal(value);
+                LoadConfiguration();
+                LoadLanguage(value);
             }
         }
 
@@ -144,71 +146,70 @@ namespace UnityExtensions
             get => _languageIndex < 0 ? string.Empty : _languages[_languageIndex].type;
             set
             {
-                if (!_initialized)
-                {
-                    LoadConfiguration();
-                    _initialized = true;
-                }
-
+                LoadConfiguration();
                 int index = Array.FindIndex(_languages, lang => lang.type == value);
-                LoadLanguageInternal(index);
+                LoadLanguage(index);
             }
         }
 
 
-        // 加载配置，第一次加载语言时自动调用
+        // 加载配置
         static void LoadConfiguration()
         {
-            var path = Application.streamingAssetsPath + "/Localization/Configuration";
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            if (!_initialized)
             {
-                using (var reader = new BinaryReader(stream))
+                var path = Application.streamingAssetsPath + "/Localization/Configuration";
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
-                    _fonts = new FontData[reader.ReadInt32()];
-                    for (int i = 0; i < _fonts.Length; i++)
+                    using (var reader = new BinaryReader(stream))
                     {
-                        _fonts[i].resourcePath = reader.ReadString();
-                    }
-
-                    _languages = new LanguageData[reader.ReadInt32()];
-                    for (int i = 0; i < _languages.Length; i++)
-                    {
-                        _languages[i].type = reader.ReadString();
-                        _languages[i].name = reader.ReadString();
-
-                        _languages[i].styles = new StyleData[reader.ReadInt32()];
-                        for (int j = 0; j < _languages[i].styles.Length; j++)
+                        _fonts = new FontData[reader.ReadInt32()];
+                        for (int i = 0; i < _fonts.Length; i++)
                         {
-                            _languages[i].styles[j].fontIndex = reader.ReadInt32();
-                            _languages[i].styles[j].fontSize = reader.ReadSingle();
-                            _languages[i].styles[j].fontStyle = reader.ReadInt32();
-                            _languages[i].styles[j].characterSpacing = reader.ReadSingle();
-                            _languages[i].styles[j].wordSpacing = reader.ReadSingle();
-                            _languages[i].styles[j].lineSpacing = reader.ReadSingle();
-                            _languages[i].styles[j].paragraphSpacing = reader.ReadSingle();
+                            _fonts[i].resourcePath = reader.ReadString();
+                        }
+
+                        _languages = new LanguageData[reader.ReadInt32()];
+                        for (int i = 0; i < _languages.Length; i++)
+                        {
+                            _languages[i].type = reader.ReadString();
+                            _languages[i].name = reader.ReadString();
+
+                            _languages[i].styles = new StyleData[reader.ReadInt32()];
+                            for (int j = 0; j < _languages[i].styles.Length; j++)
+                            {
+                                _languages[i].styles[j].fontIndex = reader.ReadInt32();
+                                _languages[i].styles[j].fontSize = reader.ReadSingle();
+                                _languages[i].styles[j].fontStyle = reader.ReadInt32();
+                                _languages[i].styles[j].characterSpacing = reader.ReadSingle();
+                                _languages[i].styles[j].wordSpacing = reader.ReadSingle();
+                                _languages[i].styles[j].lineSpacing = reader.ReadSingle();
+                                _languages[i].styles[j].paragraphSpacing = reader.ReadSingle();
+                            }
+                        }
+
+                        int textCount = reader.ReadInt32();
+                        _textNames = new Dictionary<string, TextData>(textCount);
+                        _texts = new string[textCount];
+                        TextData textData;
+                        for (int i = 0; i < textCount; i++)
+                        {
+                            string name = reader.ReadString();
+                            textData.textIndex = reader.ReadInt32();
+                            textData.styleIndex = reader.ReadInt32();
+                            _textNames.Add(name, textData);
                         }
                     }
-
-                    int textCount = reader.ReadInt32();
-                    _textNames = new Dictionary<string, TextData>(textCount);
-                    _texts = new string[textCount];
-                    TextData textData;
-                    for (int i = 0; i < textCount; i++)
-                    {
-                        string name = reader.ReadString();
-                        textData.textIndex = reader.ReadInt32();
-                        textData.styleIndex = reader.ReadInt32();
-                        _textNames.Add(name, textData);
-                    }
                 }
-            }
 
-            _languages.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
+                _languages.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
+                _initialized = true;
+            }
         }
 
 
         // 加载指定语言
-        static void LoadLanguageInternal(int index)
+        static void LoadLanguage(int index)
         {
             if (_languageIndex != index)
             {
@@ -286,16 +287,27 @@ namespace UnityExtensions
 
 
         /// <summary>
+        /// 获取语言类型
+        /// </summary>
+        public static string GetLanguageType(int index)
+        {
+            LoadConfiguration();
+            return _languages[index].type;
+        }
+
+
+        /// <summary>
         /// 获取语言名称
         /// </summary>
         public static string GetLanguageName(int index)
         {
+            LoadConfiguration();
             return _languages[index].name;
         }
 
 
         /// <summary>
-        /// 根据文本名称获取文本内容
+        /// 根据文本名称获取文本内容（必须先设置一种语言）
         /// </summary>
         public static string GetText(string name)
         {
@@ -304,7 +316,7 @@ namespace UnityExtensions
 
 
         /// <summary>
-        /// 根据文本名称更新 UI 的文本和参数
+        /// 根据文本名称更新 UI 的文本和参数（必须先设置一种语言）
         /// </summary>
         public static void UpdateUI(UIText target, string name)
         {
