@@ -99,6 +99,12 @@ namespace UnityExtensions
 
 
         /// <summary>
+        /// 语言发生改变时触发（在 onLanguageChanged 之后触发）, arg1: old index(first time is -1), arg2: new index
+        /// </summary>
+        public static event Action<int, int> onLanguageChangedLate;
+
+
+        /// <summary>
         /// 语言总数
         /// </summary>
         public static int languageCount
@@ -279,6 +285,7 @@ namespace UnityExtensions
                 int lastIndex = _languageIndex;
                 _languageIndex = index;
                 onLanguageChanged?.Invoke(lastIndex, index);
+                onLanguageChangedLate?.Invoke(lastIndex, index);
 
                 // 趁游戏卡住了顺便整理下内存
                 GC.Collect();
