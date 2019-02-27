@@ -20,8 +20,14 @@ namespace UnityExtensions
     [RequireComponent(typeof(UIText))]
     public class TextLocalization : ScriptableComponent
     {
-        [SerializeField] bool _autoUpdateWidth;
-        [SerializeField] bool _autoUpdateHeight;
+        public bool autoUpdateWidth;
+        [Indent]
+        public float extraWidth;
+
+        public bool autoUpdateHeight;
+        [Indent]
+        public float extraHeight;
+
 
         string _textName;
         UIText _target;
@@ -66,11 +72,11 @@ namespace UnityExtensions
             _languageIndex = newLanguage;
             LocalizationManager.UpdateUI(_target, _textName);
 
-            if (_autoUpdateWidth || _autoUpdateHeight)
+            if (autoUpdateWidth || autoUpdateHeight)
             {
                 var size = this.rectTransform().sizeDelta;
-                if (_autoUpdateWidth) size.x = _target.preferredWidth;
-                if (_autoUpdateHeight) size.y = _target.preferredHeight;
+                if (autoUpdateWidth) size.x = _target.preferredWidth + extraWidth;
+                if (autoUpdateHeight) size.y = _target.preferredHeight + extraHeight;
                 this.rectTransform().sizeDelta = size;
             }
         }
