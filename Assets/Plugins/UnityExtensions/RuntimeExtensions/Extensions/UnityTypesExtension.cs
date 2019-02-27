@@ -81,6 +81,83 @@ namespace UnityExtensions
 
 
         /// <summary>
+        /// 设置 localPosition.x
+        /// </summary>
+        public static void SetLocalPositionX(this Transform transform, float x)
+        {
+            var pos = transform.localPosition;
+            pos.x = x;
+            transform.localPosition = pos;
+        }
+
+
+        /// <summary>
+        /// 设置 localPosition.y
+        /// </summary>
+        public static void SetLocalPositionY(this Transform transform, float y)
+        {
+            var pos = transform.localPosition;
+            pos.y = y;
+            transform.localPosition = pos;
+        }
+
+
+        /// <summary>
+        /// 设置 localPosition.z
+        /// </summary>
+        public static void SetLocalPositionZ(this Transform transform, float z)
+        {
+            var pos = transform.localPosition;
+            pos.z = z;
+            transform.localPosition = pos;
+        }
+
+
+        /// <summary>
+        /// 设置 anchoredPosition.x
+        /// </summary>
+        public static void SetAnchoredPositionX(this RectTransform rectTransform, float x)
+        {
+            var pos = rectTransform.anchoredPosition;
+            pos.x = x;
+            rectTransform.anchoredPosition = pos;
+        }
+
+
+        /// <summary>
+        /// 设置 anchoredPosition.y
+        /// </summary>
+        public static void SetAnchoredPositionY(this RectTransform rectTransform, float y)
+        {
+            var pos = rectTransform.anchoredPosition;
+            pos.y = y;
+            rectTransform.anchoredPosition = pos;
+        }
+
+
+        /// <summary>
+        /// 设置 sizeDelta.x
+        /// </summary>
+        public static void SetSizeDeltaX(this RectTransform rectTransform, float x)
+        {
+            var size = rectTransform.sizeDelta;
+            size.x = x;
+            rectTransform.sizeDelta = size;
+        }
+
+
+        /// <summary>
+        /// 设置 sizeDelta.y
+        /// </summary>
+        public static void SetSizeDeltaY(this RectTransform rectTransform, float y)
+        {
+            var size = rectTransform.sizeDelta;
+            size.y = y;
+            rectTransform.sizeDelta = size;
+        }
+
+
+        /// <summary>
         /// 遍历 Transform 层级（根节点优先）, 对每一个节点执行一个自定义的操作
         /// </summary>
         /// <param name="root"> 遍历开始的根部 Transform 对象 </param>
