@@ -158,6 +158,72 @@ namespace UnityExtensions
 
 
         /// <summary>
+        /// 设置 anchorMin.x
+        /// </summary>
+        public static void SetAnchorMinX(this RectTransform rectTransform, float x)
+        {
+            var anchorMin = rectTransform.anchorMin;
+            anchorMin.x = x;
+            rectTransform.anchorMin = anchorMin;
+        }
+
+
+        /// <summary>
+        /// 设置 anchorMin.y
+        /// </summary>
+        public static void SetAnchorMinY(this RectTransform rectTransform, float y)
+        {
+            var anchorMin = rectTransform.anchorMin;
+            anchorMin.y = y;
+            rectTransform.anchorMin = anchorMin;
+        }
+
+
+        /// <summary>
+        /// 设置 anchorMax.x
+        /// </summary>
+        public static void SetAnchorMaxX(this RectTransform rectTransform, float x)
+        {
+            var anchorMax = rectTransform.anchorMax;
+            anchorMax.x = x;
+            rectTransform.anchorMax = anchorMax;
+        }
+
+
+        /// <summary>
+        /// 设置 anchorMax.y
+        /// </summary>
+        public static void SetAnchorMaxY(this RectTransform rectTransform, float y)
+        {
+            var anchorMax = rectTransform.anchorMax;
+            anchorMax.y = y;
+            rectTransform.anchorMax = anchorMax;
+        }
+
+
+        /// <summary>
+        /// 设置 pivot.x
+        /// </summary>
+        public static void SetPivotX(this RectTransform rectTransform, float x)
+        {
+            var pivot = rectTransform.pivot;
+            pivot.x = x;
+            rectTransform.pivot = pivot;
+        }
+
+
+        /// <summary>
+        /// 设置 pivot.y
+        /// </summary>
+        public static void SetPivotY(this RectTransform rectTransform, float y)
+        {
+            var pivot = rectTransform.pivot;
+            pivot.y = y;
+            rectTransform.pivot = pivot;
+        }
+
+
+        /// <summary>
         /// 遍历 Transform 层级（根节点优先）, 对每一个节点执行一个自定义的操作
         /// </summary>
         /// <param name="root"> 遍历开始的根部 Transform 对象 </param>
