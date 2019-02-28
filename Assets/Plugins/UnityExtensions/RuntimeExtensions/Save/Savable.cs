@@ -14,9 +14,10 @@ namespace UnityExtensions
 
     public interface ITextSavable
     {
-        void Read(string text);
-        void Write(StreamWriter writer);
-        void Reset();
+        IList<string> keys { get; }
+        void Read(string key, string value);
+        void Write(string key, StreamWriter writer);
+        void Reset(string key);
     }
 
 
@@ -58,28 +59,41 @@ namespace UnityExtensions
     /// </summary>
     public class TextSavableField : ITextSavable
     {
+        string _key;
         Action<string> _read;
         Action<StreamWriter> _write;
         Action _reset;
 
-        public TextSavableField(Action<string> read, Action<StreamWriter> write, Action reset)
+        static string[] _sharedKeyArray = new string[1];
+
+        public TextSavableField(string key, Action<string> read, Action<StreamWriter> write, Action reset)
         {
+            _key = key;
             _read = read;
             _write = write;
             _reset = reset;
         }
 
-        void ITextSavable.Read(string text)
+        IList<string> ITextSavable.keys
         {
-            _read(text);
+            get
+            {
+                _sharedKeyArray[0] = _key;
+                return _sharedKeyArray;
+            }
         }
 
-        void ITextSavable.Write(StreamWriter writer)
+        void ITextSavable.Read(string key, string value)
+        {
+            _read(value);
+        }
+
+        void ITextSavable.Write(string key, StreamWriter writer)
         {
             _write(writer);
         }
 
-        void ITextSavable.Reset()
+        void ITextSavable.Reset(string key)
         {
             _reset();
         }
@@ -127,35 +141,48 @@ namespace UnityExtensions
 
     public sealed class TextSavableCollection : TextSave
     {
-        IDictionary<string, ITextSavable> _savables;
+        Dictionary<string, ITextSavable> _savables;
 
 
-        public TextSavableCollection(IDictionary<string, ITextSavable> savables)
+        public TextSavableCollection(IList<ITextSavable> savables)
         {
-            _savables = savables;
+            _savables = new Dictionary<string, ITextSavable>(savables.Count * 2);
+
+            foreach (var s in savables)
+            {
+                foreach (var k in s.keys)
+                {
+                    _savables.Add(k, s);
+                }
+            }
         }
 
 
         protected sealed override void Read(StreamReader reader)
         {
-            var texts = reader.ReadToEnd().Split(new string[] { ": ", ":", "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var texts = reader.ReadToEnd().Split(new string[] { ": ", ":", "\n", "\r\n" }, StringSplitOptions.None);
 
-            var info = new Dictionary<string, string>(texts.Length / 2);
+            var items = new Dictionary<string, string>(texts.Length / 2);
 
-            for (int i = 0; i < texts.Length; i+=2)
+            for (int i = 1; i < texts.Length; i+=2)
             {
-                info.Add(texts[i].Trim(), texts[i+1].Trim());
+                var key = texts[i - 1].Trim();
+                var value = texts[i].Trim();
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
+                {
+                    items[key] = value;
+                }
             }
 
             foreach (var s in _savables)
             {
-                if (info.TryGetValue(s.Key, out string text))
+                if (items.TryGetValue(s.Key, out string value))
                 {
-                    s.Value.Read(text);
+                    s.Value.Read(s.Key, value);
                 }
                 else
                 {
-                    s.Value.Reset();
+                    s.Value.Reset(s.Key);
                 }
             }
         }
@@ -167,7 +194,7 @@ namespace UnityExtensions
             {
                 writer.Write(s.Key);
                 writer.Write(": ");
-                s.Value.Write(writer);
+                s.Value.Write(s.Key, writer);
                 writer.WriteLine();
             }
         }
@@ -177,7 +204,7 @@ namespace UnityExtensions
         {
             foreach (var s in _savables)
             {
-                s.Value.Reset();
+                s.Value.Reset(s.Key);
             }
         }
     }

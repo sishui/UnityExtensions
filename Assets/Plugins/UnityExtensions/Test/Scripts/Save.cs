@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UnityExtensions.Test
 {
@@ -30,22 +29,23 @@ namespace UnityExtensions.Test
             gameSave = new BinarySavableCollection(gameSavables);
 
             // Settings
-            var settingsSavables = new Dictionary<string, ITextSavable>();
-            settingsSavables.Add(
-                "Quality Level", new TextSavableField
+            var settingsSavables = new ITextSavable[]
+            {
+                new TextSavableField
                 (
+                    "Quality Level",
                     t => QualitySettings.SetQualityLevel(int.Parse(t)),
                     w => w.Write(QualitySettings.GetQualityLevel()),
                     () => QualitySettings.SetQualityLevel(0)
-                ));
-
-            settingsSavables.Add(
-                "Audio Volume", new TextSavableField
+                ),
+                new TextSavableField
                 (
+                    "Audio Volume",
                     t => AudioListener.volume = float.Parse(t),
                     w => w.Write(AudioListener.volume),
                     () => AudioListener.volume = 1
-                ));
+                ),
+            };
             settings = new TextSavableCollection(settingsSavables);
 
             // platform-dependent
