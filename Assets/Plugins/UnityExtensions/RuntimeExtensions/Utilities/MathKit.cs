@@ -109,11 +109,28 @@ namespace UnityExtensions
         }
 
 
+        public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max)
+        {
+            value.x = Mathf.Clamp(value.x, min.x, max.x);
+            value.y = Mathf.Clamp(value.y, min.y, max.y);
+            return value;
+        }
+
+
         public static Vector3 Clamp(Vector3 value, float min, float max)
         {
             value.x = Mathf.Clamp(value.x, min, max);
             value.y = Mathf.Clamp(value.y, min, max);
             value.z = Mathf.Clamp(value.z, min, max);
+            return value;
+        }
+
+
+        public static Vector3 Clamp(Vector3 value, Vector3 min, Vector3 max)
+        {
+            value.x = Mathf.Clamp(value.x, min.x, max.x);
+            value.y = Mathf.Clamp(value.y, min.y, max.y);
+            value.z = Mathf.Clamp(value.z, min.z, max.z);
             return value;
         }
 
