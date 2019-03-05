@@ -366,6 +366,46 @@ namespace UnityExtensions
         }
 
 
+        public static PlatformMask ToFlag(this RuntimePlatform platform)
+        {
+            switch (platform)
+            {
+                case RuntimePlatform.WindowsEditor: return PlatformMask.WindowsEditor;
+                case RuntimePlatform.WindowsPlayer: return PlatformMask.WindowsPlayer;
+
+                case RuntimePlatform.OSXEditor: return PlatformMask.OSXEditor;
+                case RuntimePlatform.OSXPlayer: return PlatformMask.OSXPlayer;
+
+                case RuntimePlatform.LinuxEditor: return PlatformMask.LinuxEditor;
+                case RuntimePlatform.LinuxPlayer: return PlatformMask.LinuxPlayer;
+
+                case RuntimePlatform.Android: return PlatformMask.Android;
+                case RuntimePlatform.IPhonePlayer: return PlatformMask.IPhonePlayer;
+
+                case RuntimePlatform.PS4: return PlatformMask.PS4;
+                case RuntimePlatform.XboxOne: return PlatformMask.XboxOne;
+                case RuntimePlatform.Switch: return PlatformMask.Switch;
+
+                case RuntimePlatform.WebGLPlayer: return PlatformMask.WebGLPlayer;
+
+                case RuntimePlatform.WSAPlayerX86: return PlatformMask.WSAPlayerX86;
+                case RuntimePlatform.WSAPlayerX64: return PlatformMask.WSAPlayerX64;
+                case RuntimePlatform.WSAPlayerARM: return PlatformMask.WSAPlayerARM;
+
+                case RuntimePlatform.tvOS: return PlatformMask.tvOS;
+                case RuntimePlatform.Lumin: return PlatformMask.Lumin;
+
+                default: return PlatformMask.None;
+            }
+        }
+
+
+        public static bool Contains(this PlatformMask mask, RuntimePlatform platform)
+        {
+            return (mask & platform.ToFlag()) != 0;
+        }
+
+
         /// <summary>
         /// 将屏幕尺寸转化为世界尺寸
         /// </summary>
