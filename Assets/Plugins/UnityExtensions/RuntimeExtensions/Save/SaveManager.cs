@@ -38,7 +38,7 @@ namespace UnityExtensions
     public abstract class SaveManager : IDisposable
     {
         Queue<SaveTask> _tasks = new Queue<SaveTask>(4);    // 请求的任务队列
-        protected bool _finished = false;
+        protected volatile bool _finished = false;
         bool _disposed = false;
 
         
@@ -61,7 +61,11 @@ namespace UnityExtensions
         {
             if (!_disposed)
             {
-                if (hasTask) throw new Exception("SaveManager has unfinished task!");
+                if (hasTask)
+                {
+                    UnityEngine.Debug.LogError("SaveManager has unfinished task!");
+                    return;
+                }
 
                 ApplicationKit.update -= Update;
                 OnDispose();
@@ -91,14 +95,14 @@ namespace UnityExtensions
                         break;
                 }
 
-                OnFinishTask(task);
+                FinishTask(task);
                 _finished = false;
 
                 onTaskFinished?.Invoke(task);
 
                 if (_tasks.Count > 0)
                 {
-                    OnBeginTask(_tasks.Peek());
+                    BeginTask(_tasks.Peek());
                 }
             }
         }
@@ -113,13 +117,13 @@ namespace UnityExtensions
         /// <summary>
         /// 开始任务时触发。当任务完成时设置 _finished 标记通知主线程
         /// </summary>
-        protected abstract void OnBeginTask(SaveTask task);
+        protected abstract void BeginTask(SaveTask task);
 
 
         /// <summary>
         /// 完成任务时触发
         /// </summary>
-        protected abstract void OnFinishTask(SaveTask task);
+        protected abstract void FinishTask(SaveTask task);
 
 
         /// <summary>
@@ -162,7 +166,7 @@ namespace UnityExtensions
             // 第一个任务需要主动唤起处理线程
             if (_tasks.Count == 1)
             {
-                OnBeginTask(_tasks.Peek());
+                BeginTask(_tasks.Peek());
             }
         }
 

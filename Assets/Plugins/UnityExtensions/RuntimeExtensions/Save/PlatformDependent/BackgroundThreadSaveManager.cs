@@ -10,7 +10,7 @@ namespace UnityExtensions
     {
         AutoResetEvent _event;
         Thread _thread;
-        SaveTask _task;
+        volatile SaveTask _task;
 
 
         public BackgroundThreadSaveManager()
@@ -30,19 +30,21 @@ namespace UnityExtensions
 
         protected override void OnDispose()
         {
+            _event.Set();
+            _thread.Join();
             _event.Close();
-            _thread.Abort();
+            _thread = null;
         }
         
 
-        protected override void OnBeginTask(SaveTask task)
+        protected override void BeginTask(SaveTask task)
         {
             _task = task;
             _event.Set();
         }
 
 
-        protected override void OnFinishTask(SaveTask task)
+        protected override void FinishTask(SaveTask task)
         {
         }
 
@@ -53,6 +55,8 @@ namespace UnityExtensions
             while (true)
             {
                 _event.WaitOne();
+
+                if (_task == null) return;
 
                 switch (_task.type)
                 {
