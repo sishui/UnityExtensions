@@ -21,7 +21,7 @@ namespace UnityExtensions
 
         public Type type;                   // 任务类型
         public Save save;                   // 存档对象
-        public ISaveTarget target;       // 储存目标
+        public ISaveTarget target;          // 储存目标
         public byte[] data;                 // 数据内容
         public Exception exception;         // 执行结果 (null 代表成功)
 

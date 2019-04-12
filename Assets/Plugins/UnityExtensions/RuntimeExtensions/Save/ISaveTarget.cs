@@ -23,6 +23,6 @@ namespace UnityExtensions
         /// </summary>
         void DeleteAsync(SaveTask task);
 
-    } // interface SaveTarget
+    } // interface ISaveTarget
 
 } // namespace UnityExtensions
