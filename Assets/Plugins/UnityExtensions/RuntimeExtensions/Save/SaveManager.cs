@@ -21,7 +21,7 @@ namespace UnityExtensions
 
         public Type type;                   // 任务类型
         public Save save;                   // 存档对象
-        public IStorageTarget target;       // 外存目标
+        public ISaveTarget target;       // 储存目标
         public byte[] data;                 // 数据内容
         public Exception exception;         // 执行结果 (null 代表成功)
 
@@ -32,115 +32,33 @@ namespace UnityExtensions
 
     /// <summary>
     /// 存档管理器
-    /// 所有存档相关操作本质都是异步的，但所有公开的 API 可以在主线程放心使用
-    /// 针对每一个存档对象，你需要根据需求选择恰当的 SaveManager 和 StorageTarget
+    /// 所有存档相关操作本质都是异步的，但此管理器所有 API 都应当在主线程调用
+    /// 针对每一个存档对象，你需要根据需求选择恰当的 SaveTarget
     /// </summary>
-    public abstract class SaveManager : IDisposable
+    public struct SaveManager
     {
-        Queue<SaveTask> _tasks = new Queue<SaveTask>(4);    // 请求的任务队列
-        protected volatile bool _finished = false;
-        bool _disposed = false;
+        static Queue<SaveTask> _tasks = new Queue<SaveTask>(4);    // 任务队列
 
         
         /// <summary>
         /// 任务结束时触发
         /// </summary>
-        public event Action<SaveTask> onTaskFinished;
-
-
-        public SaveManager()
-        {
-            ApplicationKit.update += Update;
-        }
-
-
-        /// <summary>
-        /// 终止并释放资源
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                if (hasTask)
-                {
-                    UnityEngine.Debug.LogError("SaveManager has unfinished task!");
-                    return;
-                }
-
-                ApplicationKit.update -= Update;
-                OnDispose();
-
-                _disposed = true;
-            }
-        }
-
-
-        /// <summary>
-        /// 每帧更新
-        /// </summary>
-        protected virtual void Update()
-        {
-            if (_finished)
-            {
-                var task = _tasks.Dequeue();
-
-                // 后续处理
-                switch (task.type)
-                {
-                    case SaveTask.Type.Load:
-                        if (task.success)
-                            task.exception = task.save.FromBytes(ref task.data);
-                        else
-                            task.save.Reset();
-                        break;
-                }
-
-                FinishTask(task);
-                _finished = false;
-
-                onTaskFinished?.Invoke(task);
-
-                if (_tasks.Count > 0)
-                {
-                    BeginTask(_tasks.Peek());
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// 终止并释放资源
-        /// </summary>
-        protected abstract void OnDispose();
-
-
-        /// <summary>
-        /// 开始任务时触发。当任务完成时设置 _finished 标记通知主线程
-        /// </summary>
-        protected abstract void BeginTask(SaveTask task);
-
-
-        /// <summary>
-        /// 完成任务时触发
-        /// </summary>
-        protected abstract void FinishTask(SaveTask task);
+        public static event Action<SaveTask> onTaskFinished;
 
 
         /// <summary>
         /// 是否有未完成的任务
         /// 在游戏退出前需检查所有任务是否已经完成
         /// </summary>
-        public bool hasTask
+        public static bool hasTask
         {
             get { return _tasks.Count > 0; }
         }
 
 
         // 新建任务
-        void NewTask(SaveTask.Type type, Save save, IStorageTarget target)
+        static void NewTask(SaveTask.Type type, Save save, ISaveTarget target)
         {
-            if (_disposed) throw new Exception("SaveManager had already disposed.");
-
             var task = new SaveTask()
             {
                 type = type,
@@ -148,7 +66,7 @@ namespace UnityExtensions
                 target = target,
             };
 
-            // 前期处理
+            // 预处理
             switch (type)
             {
                 case SaveTask.Type.Save:
@@ -163,10 +81,64 @@ namespace UnityExtensions
 
             _tasks.Enqueue(task);
 
-            // 第一个任务需要主动唤起处理线程
+            // 第一个任务在创建后立即开始执行
             if (_tasks.Count == 1)
             {
-                BeginTask(_tasks.Peek());
+                BeginTask();
+            }
+        }
+
+
+        // 开始任务时调用
+        static void BeginTask()
+        {
+            var task = _tasks.Peek();
+
+            switch (task.type)
+            {
+                case SaveTask.Type.Load:
+                    task.target.ReadAsync(task);
+                    break;
+
+                case SaveTask.Type.Save:
+                    if (task.success)
+                    {
+                        task.target.WriteAsync(task);
+                    }
+                    else
+                    {
+                        EndTask();
+                    }
+                    break;
+
+                case SaveTask.Type.Delete:
+                    task.target.DeleteAsync(task);
+                    break;
+            }
+        }
+
+
+        // 结束任务时调用
+        internal static void EndTask()
+        {
+            var task = _tasks.Dequeue();
+
+            // 后续处理
+            switch (task.type)
+            {
+                case SaveTask.Type.Load:
+                    if (task.success)
+                        task.exception = task.save.FromBytes(ref task.data);
+                    else
+                        task.save.Reset();
+                    break;
+            }
+
+            onTaskFinished?.Invoke(task);
+
+            if (_tasks.Count > 0)
+            {
+                BeginTask();
             }
         }
 
@@ -174,7 +146,7 @@ namespace UnityExtensions
         /// <summary>
         /// 新建保存任务
         /// </summary>
-        public void NewSaveTask(Save save, IStorageTarget target)
+        public static void NewSaveTask(Save save, ISaveTarget target)
         {
             NewTask(SaveTask.Type.Save, save, target);
         }
@@ -183,7 +155,7 @@ namespace UnityExtensions
         /// <summary>
         /// 新建加载任务
         /// </summary>
-        public void NewLoadTask(Save save, IStorageTarget target)
+        public static void NewLoadTask(Save save, ISaveTarget target)
         {
             NewTask(SaveTask.Type.Load, save, target);
         }
@@ -192,11 +164,11 @@ namespace UnityExtensions
         /// <summary>
         /// 新建删除任务
         /// </summary>
-        public void NewDeleteTask(IStorageTarget target)
+        public static void NewDeleteTask(ISaveTarget target)
         {
             NewTask(SaveTask.Type.Delete, null, target);
         }
 
-    } // class SaveManager
+    } // struct SaveManager
 
 } // namespace UnityExtensions

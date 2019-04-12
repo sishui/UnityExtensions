@@ -6,13 +6,11 @@ namespace UnityExtensions.Test
     {
         // GameSave
         BinarySavableCollection gameSave;
-        IStorageTarget gameSaveTarget;
-        SaveManager gameSaveManager;
+        ISaveTarget gameSaveTarget;
 
         // Settings
         TextSavableCollection settings;
-        IStorageTarget settingsTarget;
-        SaveManager settingsManager;
+        ISaveTarget settingsTarget;
 
         public static Save instance { get; private set; }
 
@@ -51,33 +49,20 @@ namespace UnityExtensions.Test
             // platform-dependent
 #if UNITY_PS4
 
-            var saveManager = new PS4SaveManager();
-
-            gameSaveTarget = new PS4StorageTarget("TestGameSave.bin");
-            gameSaveManager = saveManager;
-
-            settingsTarget = new PS4StorageTarget("TestSettings.txt");
-            settingsManager = saveManager;
+            gameSaveTarget = new PS4SaveTarget("TestGameSave.bin");
+            settingsTarget = new PS4SaveTarget("TestSettings.txt");
 
 #else // Standalone
 
     #if STEAM
 
-            gameSaveTarget = new SteamStorageTarget("TestGameSave.bin");
-            gameSaveManager = new SteamSaveManager();
-
-            settingsTarget = new FileStorageTarget("TestSettings.txt");
-            settingsManager = new BackgroundThreadSaveManager();
+            gameSaveTarget = new SteamSaveTarget("TestGameSave.bin");
+            settingsTarget = new FileSaveTarget("TestSettings.txt");
 
     #else // File System
 
-            var saveManager = new BackgroundThreadSaveManager();
-
-            gameSaveTarget = new FileStorageTarget("TestGameSave.bin");
-            gameSaveManager = saveManager;
-
-            settingsTarget = new FileStorageTarget("TestSettings.txt");
-            settingsManager = saveManager;
+            gameSaveTarget = new FileSaveTarget("TestGameSave.bin");
+            settingsTarget = new FileSaveTarget("TestSettings.txt");
 
     #endif
 
@@ -85,34 +70,27 @@ namespace UnityExtensions.Test
         }
 
 
-        void OnDestroy()
-        {
-            gameSaveManager.Dispose();
-            settingsManager.Dispose();
-        }
-
-
         public void SaveGame()
         {
-            gameSaveManager.NewSaveTask(gameSave, gameSaveTarget);
+            SaveManager.NewSaveTask(gameSave, gameSaveTarget);
         }
 
 
         public void LoadGame()
         {
-            gameSaveManager.NewLoadTask(gameSave, gameSaveTarget);
+            SaveManager.NewLoadTask(gameSave, gameSaveTarget);
         }
 
 
         public void SaveSettings()
         {
-            settingsManager.NewSaveTask(settings, settingsTarget);
+            SaveManager.NewSaveTask(settings, settingsTarget);
         }
 
 
         public void LoadSettings()
         {
-            settingsManager.NewLoadTask(settings, settingsTarget);
+            SaveManager.NewLoadTask(settings, settingsTarget);
         }
 
 
