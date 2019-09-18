@@ -216,7 +216,13 @@ namespace UnityExtensions
 
             protected virtual void OnEnable()
             {
-                SceneView.duringSceneGui += OnSceneGUI;
+                SceneView.
+#if UNITY_2019_2_OR_NEWER
+                    duringSceneGui
+#else
+                    onSceneGUIDelegate
+#endif
+                += OnSceneGUI;
                 Selection.selectionChanged += Close;
                 Tools.hidden = true;
                 _activeInstance = this;
@@ -227,7 +233,13 @@ namespace UnityExtensions
 
             protected virtual void OnDisable()
             {
-                SceneView.duringSceneGui -= OnSceneGUI;
+                SceneView.
+#if UNITY_2019_2_OR_NEWER
+                    duringSceneGui
+#else
+                    onSceneGUIDelegate
+#endif
+                -= OnSceneGUI;
                 Selection.selectionChanged -= Close;
                 Tools.hidden = false;
                 _activeInstance = null;

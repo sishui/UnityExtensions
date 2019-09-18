@@ -38,13 +38,25 @@ namespace UnityExtensions.Editor
         void OnEnable()
         {
             d = Data.instance;
-            SceneView.duringSceneGui += OnSceneGUI;
+            SceneView.
+#if UNITY_2019_2_OR_NEWER
+                duringSceneGui
+#else
+                onSceneGUIDelegate
+#endif
+                += OnSceneGUI;
         }
 
 
         void OnDisable()
         {
-            SceneView.duringSceneGui -= OnSceneGUI;
+            SceneView.
+#if UNITY_2019_2_OR_NEWER
+                duringSceneGui
+#else
+                onSceneGUIDelegate
+#endif
+            -= OnSceneGUI;
             Tools.hidden = false;
         }
 
