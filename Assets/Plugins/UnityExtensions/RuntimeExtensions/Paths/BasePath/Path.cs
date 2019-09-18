@@ -41,10 +41,10 @@ namespace UnityExtensions
         }
 
 
-        [SerializeField] float _worldScale;
-        [SerializeField] bool _circular;
-        [SerializeField] float _localLengthError;
-        [SerializeField] int _firstInvalidPathLengthIndex;
+        [SerializeField] float _worldScale = default;
+        [SerializeField] bool _circular = default;
+        [SerializeField] float _localLengthError = default;
+        [SerializeField] int _firstInvalidPathLengthIndex = default;
 
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace UnityExtensions
     /// </summary>
     public abstract class Path<Node> : Path where Node : Path.Node, new()
     {
-        [SerializeField] List<Node> _nodes;
+        [SerializeField] List<Node> _nodes = default;
 
 
         public sealed override int nodeCount => _nodes.Count;

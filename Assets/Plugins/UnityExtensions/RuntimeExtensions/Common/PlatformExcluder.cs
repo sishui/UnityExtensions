@@ -6,7 +6,7 @@ namespace UnityExtensions
     public class PlatformExcluder : ScriptableComponent
     {
         [SerializeField, Flags]
-        PlatformMask _excludedPlatforms;
+        PlatformMask _excludedPlatforms = default;
 
 
         void Awake()

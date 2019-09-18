@@ -10,7 +10,7 @@ namespace UnityExtensions
     public partial class BezierPathWithRotation
     {
         [SerializeField]
-        bool _previewRotation;
+        bool _previewRotation = default;
 
 
         protected override Type floatingWindowType => typeof(BezierPathWithRotationFloatingWindow);

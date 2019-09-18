@@ -22,10 +22,10 @@ namespace UnityExtensions
     public class State : BaseState
     {
         [SerializeField]
-        UnityEvent _onEnter;
+        UnityEvent _onEnter = default;
 
         [SerializeField]
-        UnityEvent _onExit;
+        UnityEvent _onExit = default;
 
 
         /// <summary>

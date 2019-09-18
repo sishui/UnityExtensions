@@ -27,17 +27,17 @@ namespace UnityExtensions
         int _materialMask = ~0;
 
         [SerializeField]
-        string _propertyName;
+        string _propertyName = default;
 
         [SerializeField]
-        Type _propertyType;
+        Type _propertyType = default;
 
 
         [SerializeField]
-        Vector4 _from;
+        Vector4 _from = default;
 
         [SerializeField]
-        Vector4 _to;
+        Vector4 _to = default;
 
 
         int _propertyID = -1;

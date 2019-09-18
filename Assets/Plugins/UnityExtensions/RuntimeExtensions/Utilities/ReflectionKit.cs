@@ -13,6 +13,9 @@ namespace UnityExtensions
         static IEnumerable<Type> _allAssemblyTypes;
 
 
+        /// <summary>
+        /// 类型表（可通过 Where 查找特定类型）
+        /// </summary>
         public static IEnumerable<Type> allAssemblyTypes
         {
             get

@@ -10,7 +10,7 @@ namespace UnityExtensions
     public partial class CardinalPathWithRotation
     {
         [SerializeField]
-        bool _previewRotation;
+        bool _previewRotation = default;
 
 
         protected override Type floatingWindowType => typeof(CardinalPathWithRotationFloatingWindow);

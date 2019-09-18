@@ -35,13 +35,13 @@ namespace UnityExtensions
 
 
         [SerializeField, Label("Don't Destroy on Load")]
-        bool _dontDestroyOnLoad;
+        bool _dontDestroyOnLoad = default;
 
         [SerializeField, Label("Despawn All on Destroy")]
-        bool _despawnAllOnDestroy;
+        bool _despawnAllOnDestroy = default;
 
         [SerializeField]
-        PoolSettings[] _poolSettings;
+        PoolSettings[] _poolSettings = default;
 
 
         Dictionary<string, Pool> _pools;

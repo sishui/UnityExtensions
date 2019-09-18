@@ -19,7 +19,7 @@ namespace UnityExtensions
 
 
         [SerializeField]
-        bool _alwaysVisible;
+        bool _alwaysVisible = default;
 
 
         [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected)]
@@ -216,7 +216,7 @@ namespace UnityExtensions
 
             protected virtual void OnEnable()
             {
-                SceneView.onSceneGUIDelegate += OnSceneGUI;
+                SceneView.duringSceneGui += OnSceneGUI;
                 Selection.selectionChanged += Close;
                 Tools.hidden = true;
                 _activeInstance = this;
@@ -227,7 +227,7 @@ namespace UnityExtensions
 
             protected virtual void OnDisable()
             {
-                SceneView.onSceneGUIDelegate -= OnSceneGUI;
+                SceneView.duringSceneGui -= OnSceneGUI;
                 Selection.selectionChanged -= Close;
                 Tools.hidden = false;
                 _activeInstance = null;
