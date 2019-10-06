@@ -189,13 +189,9 @@ namespace UnityExtensions
                     {
                         Selection.activeGameObject = value.gameObject;
 
-                        if (!_activeInstance)
-                        {
-                            _activeInstance = GetWindow(value.floatingWindowType, true, "Path") as FloatingWindow;
-                            _activeInstance.minSize = _activeInstance.maxSize = new Vector2(108, _activeInstance.height);
-                            _activeInstance.ShowUtility();
-                        }
-                        else _activeInstance.Focus();
+                        _activeInstance = GetWindow(value.floatingWindowType, true, "Path") as FloatingWindow;
+                        _activeInstance.minSize = _activeInstance.maxSize = new Vector2(108, _activeInstance.height);
+                        _activeInstance.ShowUtility();
                     }
                     else
                     {
@@ -251,7 +247,7 @@ namespace UnityExtensions
             void OnGUI()
             {
                 var path = target;
-                if (path)
+                if (path && path.floatingWindowType == GetType())
                 {
                     selectedNode = Mathf.Clamp(selectedNode, 0, path.nodeCount - 1);
 
@@ -328,7 +324,7 @@ namespace UnityExtensions
             void OnSceneGUI(SceneView scene)
             {
                 var path = target;
-                if (path)
+                if (path && path.floatingWindowType == GetType())
                 {
                     HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
 

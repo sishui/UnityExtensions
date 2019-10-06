@@ -8,7 +8,7 @@ namespace UnityExtensions
     /// 三次样条
     /// </summary>
     [Serializable]
-    public class CubicSpline
+    public class CubicSpline : ICopyable<CubicSpline>
     {
         [SerializeField] Vector3 _f0 = default;                   // t^0 系数
         [SerializeField] Vector3 _f1 = default;                   // t^1 系数
@@ -304,6 +304,19 @@ namespace UnityExtensions
             }
 
             return bestT;
+        }
+
+
+        public void Copy(CubicSpline target)
+        {
+            _f0 = target._f0;
+            _f1 = target._f1;
+            _f2 = target._f2;
+            _f3 = target._f3;
+
+            _lengthError = target._lengthError;
+            if (target._samples != null)
+                _samples = new List<Vector2>(target._samples);
         }
 
 

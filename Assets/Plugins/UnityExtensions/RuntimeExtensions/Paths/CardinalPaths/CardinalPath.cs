@@ -7,7 +7,7 @@ namespace UnityExtensions
     /// <summary>
     /// Cardinal Path
     /// </summary>
-    public abstract partial class CardinalPath<Node> : Path<Node> where Node : CardinalNode, new()
+    public abstract partial class CardinalPath<Node> : Path<Node> where Node : CardinalNode, ICopyable<Node>, new()
     {
         // 更新样条
         void UpdateSegment(int segmentIndex)

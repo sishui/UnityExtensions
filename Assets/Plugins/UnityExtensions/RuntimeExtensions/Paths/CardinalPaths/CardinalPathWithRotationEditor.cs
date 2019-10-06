@@ -143,6 +143,15 @@ namespace UnityExtensions
                 }
             }
         }
+
+
+        [ContextMenu("Convert to 'Cardinal Path'")]
+        void Convert()
+        {
+            var path = Undo.AddComponent<CardinalPath>(gameObject);
+            Path<CardinalNode>.Copy(path, this);
+            Undo.DestroyObjectImmediate(this);
+        }
     }
 
 } // namespace UnityExtensions

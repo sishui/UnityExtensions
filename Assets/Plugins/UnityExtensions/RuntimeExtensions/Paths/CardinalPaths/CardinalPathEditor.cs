@@ -143,6 +143,15 @@ namespace UnityExtensions
         class CardinalPathFloatingWindow : CardinalPathFloatingWindow<CardinalPath>
         {
         }
+
+
+        [ContextMenu("Convert to 'Cardinal Path with Rotation'")]
+        void Convert()
+        {
+            var path = Undo.AddComponent<CardinalPathWithRotation>(gameObject);
+            Copy(path, this);
+            Undo.DestroyObjectImmediate(this);
+        }
     }
 
 } // namespace UnityExtensions

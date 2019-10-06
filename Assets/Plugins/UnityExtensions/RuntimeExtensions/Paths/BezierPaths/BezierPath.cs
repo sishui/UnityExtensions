@@ -5,7 +5,7 @@ namespace UnityExtensions
     /// <summary>
     /// 贝塞尔路径泛型基类
     /// </summary>
-    public abstract partial class BezierPath<Node> : Path<Node> where Node : BezierNode, new()
+    public abstract partial class BezierPath<Node> : Path<Node> where Node : BezierNode, ICopyable<Node>, new()
     {
         // 更新样条
         void UpdateSegment(int segmentIndex)

@@ -143,6 +143,15 @@ namespace UnityExtensions
                 }
             }
         }
+
+
+        [ContextMenu("Convert to 'Bezier Path'")]
+        void Convert()
+        {
+            var path = Undo.AddComponent<BezierPath>(gameObject);
+            Path<BezierNode>.Copy(path, this);
+            Undo.DestroyObjectImmediate(this);
+        }
     }
 
 } // namespace UnityExtensions
