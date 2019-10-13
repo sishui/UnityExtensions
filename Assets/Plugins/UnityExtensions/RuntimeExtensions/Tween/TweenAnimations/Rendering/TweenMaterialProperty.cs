@@ -10,7 +10,7 @@ using UnityExtensions.Editor;
 namespace UnityExtensions
 {
     [TweenAnimation("Rendering/Material Property", "Material Property")]
-    public class TweenMaterialProperty : TweenAnimation
+    public class TweenMaterialProperty : TweenFromTo<Vector4>
     {
         public enum Type
         {
@@ -31,13 +31,6 @@ namespace UnityExtensions
 
         [SerializeField]
         Type _propertyType = default;
-
-
-        [SerializeField]
-        Vector4 _from = default;
-
-        [SerializeField]
-        Vector4 _to = default;
 
 
         int _propertyID = -1;
@@ -116,7 +109,7 @@ namespace UnityExtensions
         {
             if (propertyID != -1 && targetRenderer)
             {
-                var value = Vector4.LerpUnclamped(_from, _to, factor);
+                var value = Vector4.LerpUnclamped(from, to, factor);
 
                 using (var properties = GeneralKit.materialPropertyBlockPool.GetTemp())
                 {
@@ -232,8 +225,6 @@ namespace UnityExtensions
             _propertyName = null;
             _propertyType = Type.Color;
             _propertyID = -1;
-            _from = Color.white;
-            _to = Color.white;
         }
 
 
@@ -252,13 +243,11 @@ namespace UnityExtensions
                 public ShaderUtil.ShaderPropertyType type;
             }
 
-            SerializedProperty _fromProp;
             SerializedProperty _fromXProp;
             SerializedProperty _fromYProp;
             SerializedProperty _fromZProp;
             SerializedProperty _fromWProp;
 
-            SerializedProperty _toProp;
             SerializedProperty _toXProp;
             SerializedProperty _toYProp;
             SerializedProperty _toZProp;
@@ -409,17 +398,17 @@ namespace UnityExtensions
                                             if (oldType != target.propertyType)
                                             {
                                                 if (target.propertyType == Type.Color)
-                                                    target._from = target._to = Color.white;
+                                                    target.from = target.to = Color.white;
 
                                                 if (target.propertyType == Type.Float || target.propertyType == Type.Range)
-                                                    target._from.x = target._to.x = 1f;
+                                                    target.from.x = target.to.x = 1f;
 
                                                 if (target.propertyType == Type.Vector)
                                                 {
                                                     if (prop.name.EndsWith("_ST"))
-                                                        target._from = target._to = new Vector4(1, 1, 0, 0);
+                                                        target.from = target.to = new Vector4(1, 1, 0, 0);
                                                     else
-                                                        target._from = target._to = new Vector4(1, 1, 1, 1);
+                                                        target.from = target.to = new Vector4(1, 1, 1, 1);
                                                 }
                                             }
                                         });
@@ -445,31 +434,15 @@ namespace UnityExtensions
 
                 _targetRendererProp = serializedObject.FindProperty("targetRenderer");
 
-                _fromProp = serializedObject.FindProperty("_from");
                 _fromXProp = _fromProp.FindPropertyRelative("x");
                 _fromYProp = _fromProp.FindPropertyRelative("y");
                 _fromZProp = _fromProp.FindPropertyRelative("z");
                 _fromWProp = _fromProp.FindPropertyRelative("w");
 
-                _toProp = serializedObject.FindProperty("_to");
                 _toXProp = _toProp.FindPropertyRelative("x");
                 _toYProp = _toProp.FindPropertyRelative("y");
                 _toZProp = _toProp.FindPropertyRelative("z");
                 _toWProp = _toProp.FindPropertyRelative("w");
-            }
-
-
-            protected override void InitOptionsMenu(GenericMenu menu, Tween tween)
-            {
-                base.InitOptionsMenu(menu, tween);
-
-                menu.AddSeparator(string.Empty);
-
-                menu.AddItem(new GUIContent("Swap From and To"), false, () =>
-                {
-                    Undo.RecordObject(target, "Swap From and To");
-                    GeneralKit.Swap(ref target._from, ref target._to);
-                });
             }
 
 

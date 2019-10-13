@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    public abstract class TweenVector3 : TweenFromTo<Vector3>
+    public abstract class TweenVector3 : TweenFromToStruct<Vector3>
     {
         public bool3 toggle;
 
@@ -34,7 +34,7 @@ namespace UnityExtensions
         }
 
 
-        protected new abstract class Editor<T> : TweenFromTo<Vector3>.Editor<T> where T : TweenVector3
+        protected new abstract class Editor<T> : TweenFromToStruct<Vector3>.Editor<T> where T : TweenVector3
         {
             SerializedProperty _fromXProp;
             SerializedProperty _fromYProp;

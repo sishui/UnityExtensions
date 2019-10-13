@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    public abstract class TweenFloat : TweenFromTo<float>
+    public abstract class TweenFloat : TweenFromToStruct<float>
     {
         protected override void OnInterpolate(float factor)
         {
@@ -13,7 +13,7 @@ namespace UnityExtensions
 
 #if UNITY_EDITOR
 
-        protected new abstract class Editor<T> : TweenFromTo<float>.Editor<T> where T : TweenFloat
+        protected new abstract class Editor<T> : TweenFromToStruct<float>.Editor<T> where T : TweenFloat
         {
             protected override void OnPropertiesGUI(Tween tween)
             {

@@ -7,7 +7,7 @@ using UnityExtensions.Editor;
 
 namespace UnityExtensions
 {
-    public abstract class TweenColor : TweenFromTo<Color>
+    public abstract class TweenColor : TweenFromToStruct<Color>
     {
         [ToggleButton("Working Mode", "Gradient", "From-To")]
         public bool useGradient;
@@ -61,7 +61,7 @@ namespace UnityExtensions
         }
 
 
-        protected new abstract class Editor<T> : TweenFromTo<Color>.Editor<T> where T : TweenColor
+        protected new abstract class Editor<T> : TweenFromToStruct<Color>.Editor<T> where T : TweenColor
         {
             SerializedProperty _useGradientProp;
             SerializedProperty _gradientProp;
