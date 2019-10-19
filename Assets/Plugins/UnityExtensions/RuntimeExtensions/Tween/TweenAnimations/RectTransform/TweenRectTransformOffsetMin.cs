@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Rect Transform/Offset Min", "Rect Transform Offset Min")]
     class TweenRectTransformOffsetMin : TweenVector2
     {
-        public RectTransform targetRectTransform;
+        public RectTransform targetRectTransform = default;
 
 
         public override Vector2 current

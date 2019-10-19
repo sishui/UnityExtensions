@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Other/Behaviour Enabled", "Behaviour Enabled")]
     class TweenBehaviourEnabled : TweenFloat
     {
-        public Behaviour targetBehaviour;
+        public Behaviour targetBehaviour = default;
         public float criticalValue = 0.5f;
 
 

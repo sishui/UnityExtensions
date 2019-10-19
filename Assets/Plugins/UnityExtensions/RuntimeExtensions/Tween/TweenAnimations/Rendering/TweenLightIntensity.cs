@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Rendering/Light Intensity", "Light Intensity")]
     class TweenLightIntensity : TweenFloat
     {
-        public Light targetLight;
+        public Light targetLight = default;
 
 
         public override float current

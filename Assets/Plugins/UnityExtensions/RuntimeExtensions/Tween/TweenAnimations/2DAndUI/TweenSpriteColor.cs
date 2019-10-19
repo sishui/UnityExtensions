@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("2D and UI/Sprite Color", "Sprite Color")]
     class TweenSpriteColor : TweenColor
     {
-        public SpriteRenderer targetRenderer;
+        public SpriteRenderer targetRenderer = default;
 
 
         public override Color current

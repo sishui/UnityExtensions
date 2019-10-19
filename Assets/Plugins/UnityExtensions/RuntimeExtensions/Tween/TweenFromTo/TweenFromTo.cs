@@ -7,6 +7,8 @@ namespace UnityExtensions
         public T from;
         public T to;
 
+#if UNITY_EDITOR
+
         public override void Reset()
         {
             base.Reset();
@@ -14,8 +16,6 @@ namespace UnityExtensions
             to = default;
         }
 
-
-#if UNITY_EDITOR
 
         protected new abstract class Editor<U> : TweenAnimation.Editor<U> where U : TweenFromTo<T>
         {

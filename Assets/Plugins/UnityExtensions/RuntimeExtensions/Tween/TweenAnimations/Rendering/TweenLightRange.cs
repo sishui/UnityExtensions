@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Rendering/Light Range", "Light Range")]
     class TweenLightRange : TweenFloat
     {
-        public Light targetLight;
+        public Light targetLight = default;
 
 
         public override float current

@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Transform/Rotation", "Transform Rotation")]
     class TweenTransformRotation : TweenQuaternion
     {
-        public Transform targetTransform;
+        public Transform targetTransform = default;
         public Space space = Space.Self;
 
 

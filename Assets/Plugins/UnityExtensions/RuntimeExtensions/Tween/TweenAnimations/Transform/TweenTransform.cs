@@ -10,10 +10,10 @@ namespace UnityExtensions
     [TweenAnimation("Transform/Transform", "Transform")]
     class TweenTransform : TweenFromTo<Transform>
     {
-        public bool togglePosition;
-        public bool toggleRotation;
-        public bool toggleLocalScale;
-        public Transform targetTransform;
+        public bool togglePosition = default;
+        public bool toggleRotation = default;
+        public bool toggleLocalScale = default;
+        public Transform targetTransform = default;
 
 
         public Vector3 currentPosition

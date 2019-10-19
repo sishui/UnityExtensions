@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Rendering/Light Color", "Light Color")]
     class TweenLightColor : TweenColor
     {
-        public Light targetLight;
+        public Light targetLight = default;
 
 
         public override Color current

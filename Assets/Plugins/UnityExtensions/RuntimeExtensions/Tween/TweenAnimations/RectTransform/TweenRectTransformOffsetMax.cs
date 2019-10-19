@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Rect Transform/Offset Max", "Rect Transform Offset Max")]
     class TweenRectTransformOffsetMax : TweenVector2
     {
-        public RectTransform targetRectTransform;
+        public RectTransform targetRectTransform = default;
 
 
         public override Vector2 current
