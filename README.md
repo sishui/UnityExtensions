@@ -1,13 +1,20 @@
-# UnityExtensions
+# [Deprecated] UnityExtensions
 Unity 通用扩展，包括编辑器、运行时的即用扩展、API 扩展。
 注意，源代码使用了最新的 C# 特性，作者只能保证在 Unity 2018.3 及以上版本可以正常编译（注意切换到 .NET 4.x），如果你想在旧版本中使用，请自行修复编译问题。
 
-- 即用扩展
+### <font color=red>This repository is deprecated, please use [new package manager version](https://github.com/yuyang9119?tab=repositories) for new project.</font>
+
+### <font color=red>此仓库已废弃, 对于新项目请使用[新的 Package Manager 版本](https://github.com/yuyang9119?tab=repositories).</font>
+
+
+
+## 即用扩展
    - Unity 菜单：Assets->Create->Unity Extensions，你可能会用到 Layers 脚本自动生成功能。
    - Unity 菜单：Component->Unity Extensions，你可能会用到游戏对象池（Game Object Pool）、 FPS 显示、Tween 系统、Path 系统、本地化系统等功能。
    - Unity 菜单：Window->Unity Extensions，目前有一个测量工具，设计者可能会喜欢——比如解谜游戏设计者 :-)
    
-- API 扩展
+
+## API 扩展
    - 编辑器：位于 UnityExtensions.Editor 命名空间。有一些实用工具，推荐你快速浏览一下，或许可以为你的开发节约时间。
    - 运行时（位于 UnityExtensions 命名空间）
       - Attributes：位于 RuntimeExtensions/Attributes 目录，有一些实用的 Attribute 帮助你快速定制编辑器。
