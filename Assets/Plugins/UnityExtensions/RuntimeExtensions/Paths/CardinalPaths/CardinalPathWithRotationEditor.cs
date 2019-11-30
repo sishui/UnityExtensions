@@ -10,7 +10,7 @@ namespace UnityExtensions
     public partial class CardinalPathWithRotation
     {
         [SerializeField]
-        bool _previewRotation;
+        bool _previewRotation = default;
 
 
         protected override Type floatingWindowType => typeof(CardinalPathWithRotationFloatingWindow);
@@ -142,6 +142,15 @@ namespace UnityExtensions
                     }
                 }
             }
+        }
+
+
+        [ContextMenu("Convert to 'Cardinal Path'")]
+        void Convert()
+        {
+            var path = Undo.AddComponent<CardinalPath>(gameObject);
+            Path<CardinalNode>.Copy(path, this);
+            Undo.DestroyObjectImmediate(this);
         }
     }
 

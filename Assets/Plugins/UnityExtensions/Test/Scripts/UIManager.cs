@@ -8,13 +8,13 @@ namespace UnityExtensions.Test
     public class UIManager : StackStateMachineComponent<BaseStackStateComponent>
     {
         [SerializeField]
-        BaseStackStateComponent _defaultState;
+        BaseStackStateComponent _defaultState = default;
 
         [SerializeField]
-        RectTransform _border;
+        RectTransform _border = default;
 
         [SerializeField]
-        float _tweenDuration;
+        float _tweenDuration = default;
 
 
         // Tween

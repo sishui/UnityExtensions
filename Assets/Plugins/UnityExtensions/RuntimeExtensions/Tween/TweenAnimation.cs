@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityExtensions
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class TweenAnimationAttribute : Attribute
     {
         public readonly string menu;
@@ -26,7 +26,7 @@ namespace UnityExtensions
         float _maxNormalizedTime = 1f;
 
         [SerializeField]
-        CustomizableInterpolator _interpolator;
+        CustomizableInterpolator _interpolator = default;
 
 
         public float minNormalizedTime

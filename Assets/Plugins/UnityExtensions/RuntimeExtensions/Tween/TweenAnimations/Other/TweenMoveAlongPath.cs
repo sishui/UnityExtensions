@@ -7,7 +7,7 @@ namespace UnityExtensions
     [TweenAnimation("Other/Move Along Path", "Move Along Path")]
     class TweenMoveAlongPath : TweenFloat
     {
-        public MoveAlongPath targetMoveAlongPath;
+        public MoveAlongPath targetMoveAlongPath = default;
 
 
         public override float current

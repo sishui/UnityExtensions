@@ -7,7 +7,7 @@ namespace UnityExtensions
     /// 贝塞尔路径节点
     /// </summary>
     [Serializable]
-    public class BezierNode : Path.Node
+    public class BezierNode : Path.Node, ICopyable<BezierNode>
     {
         public Vector3 position;
         [SerializeField] Vector3 _forwardTangent = Vector3.forward;
@@ -101,6 +101,16 @@ namespace UnityExtensions
 
         protected virtual void OnForwardTangentChanged() { }
         protected virtual void OnBackTangentChanged() { }
+
+
+        public void Copy(BezierNode target)
+        {
+            base.Copy(target);
+            position = target.position;
+            _forwardTangent = target._forwardTangent;
+            _backTangent = target._backTangent;
+            _broken = target._broken;
+        }
 
     } // class BezierNode
 

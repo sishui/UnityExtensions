@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Transform/Euler Angles", "Transform Euler Angles")]
     class TweenTransformEulerAngles : TweenVector3
     {
-        public Transform targetTransform;
+        public Transform targetTransform = default;
         public Space space = Space.Self;
 
 

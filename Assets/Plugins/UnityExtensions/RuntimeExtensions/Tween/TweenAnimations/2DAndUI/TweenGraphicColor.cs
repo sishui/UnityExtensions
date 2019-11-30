@@ -10,7 +10,7 @@ namespace UnityExtensions
     [TweenAnimation("2D and UI/Graphic Color", "Graphic Color")]
     class TweenGraphicColor : TweenColor
     {
-        public Graphic targetGraphic;
+        public Graphic targetGraphic = default;
 
 
         public override Color current

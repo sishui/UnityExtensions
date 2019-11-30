@@ -23,10 +23,10 @@ namespace UnityExtensions
     public class StackStateComponent : BaseStackStateComponent
     {
         [SerializeField]
-        StackStateEvent _onEnter;
+        StackStateEvent _onEnter = default;
 
         [SerializeField]
-        StackStateEvent _onExit;
+        StackStateEvent _onExit = default;
 
 
         /// <summary>

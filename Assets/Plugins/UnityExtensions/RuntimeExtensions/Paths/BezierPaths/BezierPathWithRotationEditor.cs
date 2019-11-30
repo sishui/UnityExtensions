@@ -10,7 +10,7 @@ namespace UnityExtensions
     public partial class BezierPathWithRotation
     {
         [SerializeField]
-        bool _previewRotation;
+        bool _previewRotation = default;
 
 
         protected override Type floatingWindowType => typeof(BezierPathWithRotationFloatingWindow);
@@ -142,6 +142,15 @@ namespace UnityExtensions
                     }
                 }
             }
+        }
+
+
+        [ContextMenu("Convert to 'Bezier Path'")]
+        void Convert()
+        {
+            var path = Undo.AddComponent<BezierPath>(gameObject);
+            Path<BezierNode>.Copy(path, this);
+            Undo.DestroyObjectImmediate(this);
         }
     }
 

@@ -2,38 +2,12 @@
 
 namespace UnityExtensions
 {
-    public abstract class TweenFromTo<T> : TweenAnimation where T : struct
+    public abstract class TweenFromTo<T> : TweenAnimation
     {
         public T from;
         public T to;
 
-
-        /// <summary>
-        /// 当前状态
-        /// </summary>
-        public abstract T current
-        {
-            get;
-            set;
-        }
-
-
 #if UNITY_EDITOR
-
-        T _temp;
-
-
-        public override void Record()
-        {
-            _temp = current;
-        }
-
-
-        public override void Restore()
-        {
-            current = _temp;
-        }
-
 
         public override void Reset()
         {
@@ -63,36 +37,77 @@ namespace UnityExtensions
 
                 menu.AddSeparator(string.Empty);
 
-                menu.AddItem(new GUIContent("Swap From and To"), false, () =>
+                menu.AddItem(new GUIContent("from <=> to"), false, () =>
                 {
-                    UnityEditor.Undo.RecordObject(target, "Swap From and To");
+                    UnityEditor.Undo.RecordObject(target, "from <=> to");
                     GeneralKit.Swap(ref target.from, ref target.to);
                 });
+            }
 
-                menu.AddItem(new GUIContent("Set From to Current"), false, () => 
-                {
-                    UnityEditor.Undo.RecordObject(target, "Set From to Current");
-                    target.from = target.current;
-                });
+        }
 
-                menu.AddItem(new GUIContent("Set To to Current"), false, () =>
-                {
-                    UnityEditor.Undo.RecordObject(target, "Set To to Current");
-                    target.to = target.current;
-                });
+#endif
 
-                menu.AddSeparator(string.Empty);
+    }
 
-                menu.AddItem(new GUIContent("Set Current to From"), false, () =>
+
+    public abstract class TweenFromToStruct<T> : TweenFromTo<T> where T : struct
+    {
+        /// <summary>
+        /// 当前状态
+        /// </summary>
+        public abstract T current
+        {
+            get;
+            set;
+        }
+
+
+#if UNITY_EDITOR
+
+        T _temp;
+
+
+        public override void Record()
+        {
+            _temp = current;
+        }
+
+
+        public override void Restore()
+        {
+            current = _temp;
+        }
+
+
+        protected new abstract class Editor<U> : TweenFromTo<T>.Editor<U> where U : TweenFromToStruct<T>
+        {
+            protected override void InitOptionsMenu(UnityEditor.GenericMenu menu, Tween tween)
+            {
+                base.InitOptionsMenu(menu, tween);
+
+                menu.AddItem(new GUIContent("current = from"), false, () =>
                 {
                     target.OnInterpolate(0);
                     UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
                 });
 
-                menu.AddItem(new GUIContent("Set Current to To"), false, () =>
+                menu.AddItem(new GUIContent("current = to"), false, () =>
                 {
                     target.OnInterpolate(1);
                     UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
+                });
+
+                menu.AddItem(new GUIContent("from = current"), false, () => 
+                {
+                    UnityEditor.Undo.RecordObject(target, "from = current");
+                    target.from = target.current;
+                });
+
+                menu.AddItem(new GUIContent("to = current"), false, () =>
+                {
+                    UnityEditor.Undo.RecordObject(target, "to = current");
+                    target.to = target.current;
                 });
             }
         }

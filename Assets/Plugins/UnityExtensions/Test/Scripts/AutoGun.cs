@@ -8,10 +8,10 @@ namespace UnityExtensions.Test
     public class AutoGun : StateMachineComponent<State>
     {
         [SerializeField]
-        Transform _muzzle;
+        Transform _muzzle = default;
 
         [SerializeField]
-        Renderer _muzzleRenderer;
+        Renderer _muzzleRenderer = default;
 
         [SerializeField]
         [Min(10)]

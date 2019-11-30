@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("2D and UI/Canvas Group Alpha", "Canvas Group Alpha")]
     class TweenCanvasGroupAlpha : TweenFloat
     {
-        public CanvasGroup targetCanvasGroup;
+        public CanvasGroup targetCanvasGroup = default;
 
 
         public override float current

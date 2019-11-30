@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Rect Transform/Anchored Position", "Rect Transform Anchored Position")]
     class TweenRectTransformAnchoredPosition : TweenVector2
     {
-        public RectTransform targetRectTransform;
+        public RectTransform targetRectTransform = default;
 
 
         public override Vector2 current

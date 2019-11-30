@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace UnityExtensions
 {
-    public abstract class TweenQuaternion : TweenFromTo<Quaternion>
+    public abstract class TweenQuaternion : TweenFromToStruct<Quaternion>
     {
         protected override void OnInterpolate(float factor)
         {
@@ -21,7 +21,7 @@ namespace UnityExtensions
         Vector3 _toEulerAngles = Vector3.zero;
 
 
-        protected new abstract class Editor<T> : TweenFromTo<Quaternion>.Editor<T> where T : TweenQuaternion
+        protected new abstract class Editor<T> : TweenFromToStruct<Quaternion>.Editor<T> where T : TweenQuaternion
         {
             protected override void OnPropertiesGUI(Tween tween)
             {

@@ -1,11 +1,14 @@
 ﻿#if UNITY_EDITOR
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityExtensions.Editor;
+
+#if !UNITY_2019_2_OR_NEWER
+using System.Linq;
+#endif
 
 namespace UnityExtensions
 {
@@ -19,6 +22,17 @@ namespace UnityExtensions
         [InitializeOnLoadMethod]
         static void Init()
         {
+#if UNITY_2019_2_OR_NEWER
+
+            var types = TypeCache.GetTypesWithAttribute<TweenAnimationAttribute>();
+            foreach (var t in types)
+            {
+                if (t.IsSubclassOf(typeof(TweenAnimation)) && !t.IsAbstract)
+                    allTypes.Add(t, t.GetCustomAttributes(typeof(TweenAnimationAttribute), false)[0] as TweenAnimationAttribute);
+            }
+
+#else
+
             var types = ReflectionKit.allAssemblyTypes.Where(
                 t => t.IsSubclassOf(typeof(TweenAnimation))
                 && t.IsDefined(typeof(TweenAnimationAttribute), false)
@@ -28,6 +42,8 @@ namespace UnityExtensions
             {
                 allTypes.Add(t, t.GetCustomAttributes(typeof(TweenAnimationAttribute), false)[0] as TweenAnimationAttribute);
             }
+
+#endif
         }
 
 

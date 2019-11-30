@@ -19,7 +19,7 @@ namespace UnityExtensions
 
 
         [SerializeField]
-        bool _alwaysVisible;
+        bool _alwaysVisible = default;
 
 
         [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected)]
@@ -189,13 +189,9 @@ namespace UnityExtensions
                     {
                         Selection.activeGameObject = value.gameObject;
 
-                        if (!_activeInstance)
-                        {
-                            _activeInstance = GetWindow(value.floatingWindowType, true, "Path") as FloatingWindow;
-                            _activeInstance.minSize = _activeInstance.maxSize = new Vector2(108, _activeInstance.height);
-                            _activeInstance.ShowUtility();
-                        }
-                        else _activeInstance.Focus();
+                        _activeInstance = GetWindow(value.floatingWindowType, true, "Path") as FloatingWindow;
+                        _activeInstance.minSize = _activeInstance.maxSize = new Vector2(108, _activeInstance.height);
+                        _activeInstance.ShowUtility();
                     }
                     else
                     {
@@ -216,7 +212,13 @@ namespace UnityExtensions
 
             protected virtual void OnEnable()
             {
-                SceneView.onSceneGUIDelegate += OnSceneGUI;
+                SceneView.
+#if UNITY_2019_2_OR_NEWER
+                    duringSceneGui
+#else
+                    onSceneGUIDelegate
+#endif
+                += OnSceneGUI;
                 Selection.selectionChanged += Close;
                 Tools.hidden = true;
                 _activeInstance = this;
@@ -227,7 +229,13 @@ namespace UnityExtensions
 
             protected virtual void OnDisable()
             {
-                SceneView.onSceneGUIDelegate -= OnSceneGUI;
+                SceneView.
+#if UNITY_2019_2_OR_NEWER
+                    duringSceneGui
+#else
+                    onSceneGUIDelegate
+#endif
+                -= OnSceneGUI;
                 Selection.selectionChanged -= Close;
                 Tools.hidden = false;
                 _activeInstance = null;
@@ -239,7 +247,7 @@ namespace UnityExtensions
             void OnGUI()
             {
                 var path = target;
-                if (path)
+                if (path && path.floatingWindowType == GetType())
                 {
                     selectedNode = Mathf.Clamp(selectedNode, 0, path.nodeCount - 1);
 
@@ -316,7 +324,7 @@ namespace UnityExtensions
             void OnSceneGUI(SceneView scene)
             {
                 var path = target;
-                if (path)
+                if (path && path.floatingWindowType == GetType())
                 {
                     HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
 

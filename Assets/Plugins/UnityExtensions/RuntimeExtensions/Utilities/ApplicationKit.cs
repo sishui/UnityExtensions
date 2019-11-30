@@ -33,10 +33,7 @@ namespace UnityExtensions
                     | HideFlags.DontSaveInEditor
                     | HideFlags.DontSaveInBuild
                     | HideFlags.DontUnloadUnusedAsset;
-            }
 
-            if (!_globalComponent)
-            {
                 _globalComponent = _globalGameObject.AddComponent<GlobalComponent>();
             }
         }
@@ -96,7 +93,7 @@ namespace UnityExtensions
         }
 
 
-        [ExecuteInEditMode]
+        [ExecuteAlways]
         public class GlobalComponent : ScriptableComponent
         {
             WaitForFixedUpdate _waitForFixedUpdate;
@@ -107,6 +104,18 @@ namespace UnityExtensions
                 _waitForFixedUpdate = new WaitForFixedUpdate();
                 StartCoroutine(WaitForFixedUpdate());
             }
+
+
+#if UNITY_EDITOR
+            // Unity 重新编译后，非序列化的引用会丢失，这里将旧的实例都销毁掉
+            void OnEnable()
+            {
+                if (gameObject != _globalGameObject)
+                {
+                    GeneralKit.DestroySafely(gameObject);
+                }
+            }
+#endif
 
 
             void FixedUpdate()

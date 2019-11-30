@@ -7,7 +7,7 @@ namespace UnityExtensions
     /// Cardinal 路径节点 (with Rotation)
     /// </summary>
     [Serializable]
-    public class CardinalNodeWithRotation : CardinalNode
+    public class CardinalNodeWithRotation : CardinalNode, ICopyable<CardinalNodeWithRotation>
     {
         public Quaternion rotation;
         public bool lookTangent;
@@ -38,6 +38,14 @@ namespace UnityExtensions
             {
                 SetRotation(path, nodeIndex, rotation);
             }
+        }
+
+
+        public void Copy(CardinalNodeWithRotation target)
+        {
+            base.Copy(target);
+            rotation = target.rotation;
+            lookTangent = target.lookTangent;
         }
     }
 

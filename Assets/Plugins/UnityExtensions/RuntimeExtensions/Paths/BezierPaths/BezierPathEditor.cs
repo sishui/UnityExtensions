@@ -173,6 +173,15 @@ namespace UnityExtensions
         class BezierPathFloatingWindow : BezierPathFloatingWindow<BezierPath>
         {
         }
+
+
+        [ContextMenu("Convert to 'Bezier Path with Rotation'")]
+        void Convert()
+        {
+            var path = Undo.AddComponent<BezierPathWithRotation>(gameObject);
+            Copy(path, this);
+            Undo.DestroyObjectImmediate(this);
+        }
     }
 
 } // namespace UnityExtensions

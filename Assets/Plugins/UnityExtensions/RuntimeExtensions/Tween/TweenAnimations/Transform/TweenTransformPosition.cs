@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Transform/Position", "Transform Position")]
     class TweenTransformPosition : TweenVector3
     {
-        public Transform targetTransform;
+        public Transform targetTransform = default;
         public Space space = Space.Self;
 
 

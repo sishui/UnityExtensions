@@ -111,6 +111,12 @@ namespace UnityExtensions
         }
 
 
+        public BinarySavableCollection(params IBinarySavable[] savables)
+        {
+            _savables = savables;
+        }
+
+
         protected sealed override void Read(BinaryReader reader)
         {
             foreach (var s in _savables)
@@ -155,6 +161,11 @@ namespace UnityExtensions
                     _savables.Add(k, s);
                 }
             }
+        }
+
+
+        public TextSavableCollection(params ITextSavable[] savables) : this(savables as IList<ITextSavable>)
+        {
         }
 
 

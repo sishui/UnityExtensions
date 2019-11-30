@@ -9,7 +9,7 @@ namespace UnityExtensions
     [TweenAnimation("Transform/Scale", "Transform Scale")]
     class TweenTransformScale : TweenVector3
     {
-        public Transform targetTransform;
+        public Transform targetTransform = default;
 
 
         public override Vector3 current

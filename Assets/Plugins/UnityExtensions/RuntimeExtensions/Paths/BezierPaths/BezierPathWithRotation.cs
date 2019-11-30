@@ -7,7 +7,7 @@ namespace UnityExtensions
     /// 贝塞尔路径节点 (with Rotation)
     /// </summary>
     [Serializable]
-    public class BezierNodeWithRotation : BezierNode
+    public class BezierNodeWithRotation : BezierNode, ICopyable<BezierNodeWithRotation>
     {
         [SerializeField]
         Quaternion _rotation = Quaternion.identity;
@@ -56,6 +56,14 @@ namespace UnityExtensions
             {
                 rotation = _rotation;
             }
+        }
+
+
+        public void Copy(BezierNodeWithRotation target)
+        {
+            base.Copy(target);
+            _rotation = target._rotation;
+            _lookTangent = target._lookTangent;
         }
     }
 

@@ -7,14 +7,20 @@ namespace UnityExtensions
     /// <summary>
     /// 路径基类. 路径是 Cubic Spline 的有序组合
     /// </summary>
-    [DisallowMultipleComponent]
     public abstract partial class Path : ScriptableComponent
     {
         // 节点. 一个节点包含一段三次样条
         [Serializable]
-        public class Node : CubicSpline
+        public class Node : CubicSpline, ICopyable<Node>
         {
             public float pathLength;        // 从路径起点到此段终点的路径长度
+
+
+            public void Copy(Node target)
+            {
+                base.Copy(target);
+                pathLength = target.pathLength;
+            }
         }
 
 
@@ -41,10 +47,10 @@ namespace UnityExtensions
         }
 
 
-        [SerializeField] float _worldScale;
-        [SerializeField] bool _circular;
-        [SerializeField] float _localLengthError;
-        [SerializeField] int _firstInvalidPathLengthIndex;
+        [SerializeField] float _worldScale = default;
+        [SerializeField] bool _circular = default;
+        [SerializeField] float _localLengthError = default;
+        [SerializeField] int _firstInvalidPathLengthIndex = default;
 
 
         /// <summary>
@@ -579,15 +585,24 @@ namespace UnityExtensions
             target.position = GetPoint(location);
         }
 
+
+        protected static void CopyBaseData(Path path1, Path path2)
+        {
+            path1._worldScale = path2._worldScale;
+            path1._circular = path2._circular;
+            path1._localLengthError = path2._localLengthError;
+            path1._firstInvalidPathLengthIndex = path2._firstInvalidPathLengthIndex;
+        }
+
     } // class Path
 
 
     /// <summary>
     /// 泛型路径基类
     /// </summary>
-    public abstract class Path<Node> : Path where Node : Path.Node, new()
+    public abstract class Path<Node> : Path where Node : Path.Node, ICopyable<Node>, new()
     {
-        [SerializeField] List<Node> _nodes;
+        [SerializeField] List<Node> _nodes = default;
 
 
         public sealed override int nodeCount => _nodes.Count;
@@ -625,6 +640,23 @@ namespace UnityExtensions
         {
             base.Reset();
             _nodes = new List<Node>(8);
+        }
+
+
+        protected static void Copy<N1, N2>(Path<N1> path1, Path<N2> path2)
+            where N1 : Node, ICopyable<N1>, new()
+            where N2 : Node, ICopyable<N2>, new()
+        {
+            int count = path2._nodes.Count;
+            path1._nodes = new List<N1>(count);
+            for (int i = 0; i < count; i++)
+            {
+                var node = new N1();
+                (node as ICopyable<Node>).Copy(path2._nodes[i]);
+                path1._nodes.Add(node);
+            }
+
+            CopyBaseData(path1, path2);
         }
 
     } // class Path<Node>

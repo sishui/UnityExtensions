@@ -8,15 +8,15 @@ namespace UnityExtensions
     /// 三次样条
     /// </summary>
     [Serializable]
-    public class CubicSpline
+    public class CubicSpline : ICopyable<CubicSpline>
     {
-        [SerializeField] Vector3 _f0;                   // t^0 系数
-        [SerializeField] Vector3 _f1;                   // t^1 系数
-        [SerializeField] Vector3 _f2;                   // t^2 系数
-        [SerializeField] Vector3 _f3;                   // t^3 系数
+        [SerializeField] Vector3 _f0 = default;                   // t^0 系数
+        [SerializeField] Vector3 _f1 = default;                   // t^1 系数
+        [SerializeField] Vector3 _f2 = default;                   // t^2 系数
+        [SerializeField] Vector3 _f3 = default;                   // t^3 系数
 
         [SerializeField] float _lengthError = 0.01f;    // 长度误差
-        [SerializeField] List<Vector2> _samples;        // t 对应长度的采样表
+        [SerializeField] List<Vector2> _samples = default;        // t 对应长度的采样表
 
         const int _minSegments = 6;                     // 最小分段数
         const int _maxSegments = 1000000;               // 最大分段数
@@ -304,6 +304,19 @@ namespace UnityExtensions
             }
 
             return bestT;
+        }
+
+
+        public void Copy(CubicSpline target)
+        {
+            _f0 = target._f0;
+            _f1 = target._f1;
+            _f2 = target._f2;
+            _f3 = target._f3;
+
+            _lengthError = target._lengthError;
+            if (target._samples != null)
+                _samples = new List<Vector2>(target._samples);
         }
 
 

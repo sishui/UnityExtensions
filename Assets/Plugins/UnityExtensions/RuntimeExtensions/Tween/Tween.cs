@@ -34,7 +34,7 @@ namespace UnityExtensions
     /// 插值动画
     /// </summary>
     [AddComponentMenu("Unity Extensions/Tween")]
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public partial class Tween : ConfigurableUpdateComponent
     {
         const float _minDuration = 0.0001f;
@@ -47,10 +47,10 @@ namespace UnityExtensions
         public WrapMode wrapMode = WrapMode.Clamp;
         public ArrivedAction arrivedAction = ArrivedAction.AlwaysStopOnArrived;
 
-        [SerializeField] UnityEvent _onForwardArrived;
-        [SerializeField] UnityEvent _onBackArrived;
+        [SerializeField] UnityEvent _onForwardArrived = default;
+        [SerializeField] UnityEvent _onBackArrived = default;
 
-        [SerializeField] List<TweenAnimation> _animations;
+        [SerializeField] List<TweenAnimation> _animations = default;
 
 
         float _normalizedTime = 0f;

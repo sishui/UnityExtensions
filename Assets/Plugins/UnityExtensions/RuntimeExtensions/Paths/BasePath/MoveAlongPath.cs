@@ -13,7 +13,7 @@ namespace UnityExtensions
         Path _path;
 
         [SerializeField]
-        float _distance;
+        float _distance = default;
 
 
         Path.Location _location = new Path.Location(-1, 0);

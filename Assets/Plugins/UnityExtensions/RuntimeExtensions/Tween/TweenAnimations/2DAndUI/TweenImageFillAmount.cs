@@ -10,7 +10,7 @@ namespace UnityExtensions
     [TweenAnimation("2D and UI/Image Fill Amount", "Image Fill Amount")]
     class TweenImageFillAmount : TweenFloat
     {
-        public Image targetImage;
+        public Image targetImage = default;
 
 
         public override float current
